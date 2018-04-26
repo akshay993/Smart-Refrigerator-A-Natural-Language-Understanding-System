@@ -1,0 +1,7 @@
+There are three shelfs in the fridge. There is a bottom shelf, there is a middle shelf and there is atop shelf.
+The top shelf has three containers. There is a blue container, a white container and a red container in the top shelf.
+The middle shelf has two containers. There is green container and a red container in the middle shelf.
+The blue container on the top shelf has a sandwich that has no meat. The white container on the top shelf has tofu. The red container on the top shelf has apples.
+The green container on the middle shelf has vegetables. The red container on the middle shelf has a yellow bowl which contains two eggs.
+There are three sandwiches in the middle shelf which do not contain meat
+The bottom shelf has two watermelons and a can of almond milk.
