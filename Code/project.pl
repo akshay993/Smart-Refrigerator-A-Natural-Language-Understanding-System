@@ -85,6 +85,33 @@ lemma(under,p).
 lemma(on,vacp).   
 lemma(to,vacp).
 
+%%%%%%%%%% ------------ My Lemmas 
+
+lemma(egg,n).
+lemma(shelf,n).
+lemma(fridge,n).
+lemma(container,n).
+lemma(sandwich,n).
+lemma(meat,n).
+lemma(tofu,n).
+lemma(apple,n).
+lemma(vegetable,n).
+lemma(banana,n).
+lemma(watermelon,n).
+lemma(almond,n).
+lemma(milk,n).
+lemma(popsicle,n).
+lemma(can,n).
+lemma(skim,n).
+
+lemma(blue,adj).
+lemma(yellow,adj).
+lemma(drink,tv).
+lemma(contain,tv).
+
+
+%%%%%%%%%% ------------ End My Lemmas
+
  
 % --------------------------------------------------------------------
 % Constructing lexical items:
