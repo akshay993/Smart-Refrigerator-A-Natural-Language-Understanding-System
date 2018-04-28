@@ -141,6 +141,7 @@ lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):-
 
 rule(np(Y),[dt(X^Y),n(X)]).
 rule(np(X),[pn(X)]).
+%Shubham's changes
 
 % ...
 
