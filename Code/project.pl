@@ -87,6 +87,7 @@ lemma(to,vacp).
 
 %%%%%%%%%% ------------ My Lemmas [Akshay Chopra]
 
+%% Nouns
 lemma(egg,n).
 lemma(shelf,n).
 lemma(fridge,n).
@@ -104,10 +105,29 @@ lemma(popsicle,n).
 lemma(can,n).
 lemma(skim,n).
 
+%% Adjective and Transitive Verbs
 lemma(blue,adj).
 lemma(yellow,adj).
 lemma(drink,tv).
 lemma(contain,tv).
+
+%% Interrogative Pronouns
+lemma(who,ip).
+lemma(which,ip).
+lemma(what,ip).
+
+%% Numerals
+lemma(one,dt).
+lemma(two,dt).
+lemma(three,dt).
+lemma(four,dt).
+lemma(five,dt).
+lemma(six,dt).
+lemma(seven,dt).
+lemma(eight,dt).
+lemma(nine,dt).
+lemma(ten,dt).
+
 
 
 %%%%%%%%%% ------------ End My Lemmas [Akshay Chopra]
