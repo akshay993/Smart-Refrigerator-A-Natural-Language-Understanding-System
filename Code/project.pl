@@ -10,13 +10,13 @@
 chat:-
  repeat,
    readinput(Input),
-   process(Input), 
+   process(Input),
   (Input = [bye| _] ),!.
-  
+
 
 % ===========================================================
 % Read input:
-% 1. Read char string from keyboard. 
+% 1. Read char string from keyboard.
 % 2. Convert char string to atom char list.
 % 3. Convert char list to lower case.
 % 4. Tokenize (based on spaces).
@@ -41,7 +41,7 @@ process(Input):-
 	modelchecker(SemanticRepresentation,Evaluation),
 	respond(Evaluation),!,
 	nl,nl.
-	
+
 process([bye|_]):-
    write('> bye!').
 
@@ -82,10 +82,10 @@ lemma(was,be).
 lemma(eat,tv).
 lemma(in,p).
 lemma(under,p).
-lemma(on,vacp).   
+lemma(on,vacp).
 lemma(to,vacp).
 
-%%%%%%%%%% ------------ My Lemmas 
+%%%%%%%%%% ------------ My Lemmas [Akshay Chopra]
 
 lemma(egg,n).
 lemma(shelf,n).
@@ -110,9 +110,9 @@ lemma(drink,tv).
 lemma(contain,tv).
 
 
-%%%%%%%%%% ------------ End My Lemmas
+%%%%%%%%%% ------------ End My Lemmas [Akshay Chopra]
 
- 
+
 % --------------------------------------------------------------------
 % Constructing lexical items:
 % word = lemma + suffix (for "suffix" of size 0 or bigger)
@@ -125,7 +125,24 @@ lex(n(X^P),Lemma):-
 
 lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):-
 		lemma(Word,dtforall).
-				
+
+%%%%%%%%%% ------------ My Lexicons
+
+lex(n(X^P),Word):- lemma(Word,n), P =.. [Word,X].
+lex(pn(Word^X)^X,Word):- lemma(Word,n).
+lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,ed,Y),P=.. [Word,X].
+lex(tv(K^W^P),Word):-lemma(Word,tv), P=.. [Word,K,W].
+lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X].
+lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y].
+
+
+%%%%%%%%%% ------------ End My Lexicons
+
+
+
+
+
+
 % ...
 
 % --------------------------------------------------------------------
@@ -160,28 +177,27 @@ rule(np(X),[pn(X)]).
 % ===========================================================
 
 % Declarative true in the model
-respond(Evaluation) :- 
-		Evaluation = [true_in_the_model], 
+respond(Evaluation) :-
+		Evaluation = [true_in_the_model],
 		write('That is correct'),!.
 
 % Declarative false in the model
-respond(Evaluation) :- 
-		Evaluation = [not_true_in_the_model],  
+respond(Evaluation) :-
+		Evaluation = [not_true_in_the_model],
 		write('That is not correct'),!.
 
 % Yes-No interrogative true in the model
-respond(Evaluation) :- 
-		Evaluation = [yes_to_question],			
+respond(Evaluation) :-
+		Evaluation = [yes_to_question],
 		write('yes').
 
-% Yes-No interrogative false in the model		
-respond(Evaluation) :- 
-		Evaluation = [no_to_question], 			
+% Yes-No interrogative false in the model
+respond(Evaluation) :-
+		Evaluation = [no_to_question],
 		write('no').
 
 % wh-interrogative true in the model
-% ...							
+% ...
 
 % wh-interrogative false in the model
-% ...							
-
+% ...
