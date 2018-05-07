@@ -68,24 +68,37 @@ process([bye|_]):-
 % Lemmas are uninflected, except for irregular inflection
 % lemma(+Lemma,+Category)
 % --------------------------------------------------------------------
-lemma(a,dtexists).
-lemma(an,dtexists).
-lemma(each,dtforall).
-lemma(all,dtforall).
-lemma(every,dtforall).
-lemma(box,n).
-lemma(tom,pn).
-lemma(mia,pn).
-lemma(red,adj).
+
+
 lemma(is,be).
 lemma(was,be).
-lemma(eat,tv).
-lemma(in,p).
-lemma(under,p).
+lemma(are,be).
 lemma(on,vacp).
 lemma(to,vacp).
 
 %%%%%%%%%% ------------ My Lemmas [Akshay Chopra]
+
+%% Determiners
+lemma(a,dtexists).
+lemma(an,dtexists).
+lemma(some,dtexists).
+lemma(each,dtforall).
+lemma(all,dtforall).
+lemma(every,dtforall).
+lemma(the,dt).
+
+%% Numerals
+lemma(no,dt).
+lemma(one,dt).
+lemma(two,dt).
+lemma(three,dt).
+lemma(four,dt).
+lemma(five,dt).
+lemma(six,dt).
+lemma(seven,dt).
+lemma(eight,dt).
+lemma(nine,dt).
+lemma(ten,dt).
 
 %% Nouns
 lemma(egg,n).
@@ -104,29 +117,45 @@ lemma(milk,n).
 lemma(popsicle,n).
 lemma(can,n).
 lemma(skim,n).
+lemma(box,n).
 
-%% Adjectives and Verbs
+%% Proper Nouns
+lemma(tom,pn).
+lemma(mia,pn).
+
+%% Adjectives
 lemma(blue,adj).
 lemma(yellow,adj).
+lemma(white,adj).
+lemma(green,adj).
+lemma(top,adj).
+lemma(middle,adj).
+lemma(bottom,adj).
+lemma(red,adj).
+lemma(empty,adj).
+
+%% Verbs
+lemma(expire,iv).
 lemma(drink,tv).
+lemma(drank,tv).
+lemma(drunk,tv).
 lemma(contain,tv).
+lemma(eat,tv).
+lemma(ate,tv).
+
+%% Prepositions
+lemma(in,p).
+lemma(inside,p).
+lemma(under,p).
 
 %% Interrogative Pronouns
 lemma(who,ip).
 lemma(which,ip).
 lemma(what,ip).
 
-%% Numerals
-lemma(one,dt).
-lemma(two,dt).
-lemma(three,dt).
-lemma(four,dt).
-lemma(five,dt).
-lemma(six,dt).
-lemma(seven,dt).
-lemma(eight,dt).
-lemma(nine,dt).
-lemma(ten,dt).
+%% Relative Clauses
+%% lemma(that,rel).
+%% lemma(there,rel).
 
 
 
@@ -175,6 +204,7 @@ rule(pp(C),[p(A^B^C),np(A^B)]).
 rule(vp(A),[iv(A)]).
 rule(vp(A^B),[tv(A^C),np(C^B)]).
 rule(s(B),[np(A^B),vp(A)]).
+
 
 %%%%%%%%%% ------------ End of Shubham's Rules
 % ...
