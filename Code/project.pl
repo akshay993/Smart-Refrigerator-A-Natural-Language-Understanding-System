@@ -139,15 +139,10 @@ lemma(ten,dt).
 % --------------------------------------------------------------------
 
 
-lex(n(X^P),Lemma):-
-	lemma(Lemma,n),
-	P=.. [Lemma,X].
-
-lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):-
-		lemma(Word,dtforall).
-
 %%%%%%%%%% ------------ My Lexicons
 
+lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):- lemma(Word,dtforall).
+lex(dt((X^P)^(X^Q)^exists(X,and(P,Q))),Word):-lemma(Word,dtexists).
 lex(n(X^P),Word):- lemma(Word,n), P =.. [Word,X].
 lex(pn(Word^X)^X,Word):- lemma(Word,n).
 lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,ed,Y),P=.. [Word,X].
@@ -155,13 +150,7 @@ lex(tv(K^W^P),Word):-lemma(Word,tv), P=.. [Word,K,W].
 lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X].
 lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y].
 
-
 %%%%%%%%%% ------------ End My Lexicons
-
-
-
-
-
 
 % ...
 
@@ -176,9 +165,18 @@ lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y].
 % rule(+LHS,+ListOfRHS)
 % --------------------------------------------------------------------
 
+%%%%%%%%%% ------------ Shubham's Rules
+
 rule(np(Y),[dt(X^Y),n(X)]).
 rule(np(X),[pn(X)]).
+rule(n(A^C),[n(A^B),pp((A^B)^C)]).
+rule(n(A),[adj(B^A),n(B)]).
+rule(pp(C),[p(A^B^C),np(A^B)]).
+rule(vp(A),[iv(A)]).
+rule(vp(A^B),[tv(A^C),np(C^B)]).
+rule(s(B),[np(A^B),vp(A)]).
 
+%%%%%%%%%% ------------ End of Shubham's Rules
 % ...
 
 
