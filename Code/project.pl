@@ -56,7 +56,6 @@ process([bye|_]):-
 %parse(Input, SemanticRepresentation):-
 % ...
 
-
 % ===========================================================
 % Grammar
 % 1. List of lemmas
@@ -168,18 +167,38 @@ lemma(what,ip).
 % --------------------------------------------------------------------
 
 
+
 %%%%%%%%%% ------------ My Lexicons
 
-lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):- lemma(Word,dtforall).
-lex(dt((X^P)^(X^Q)^exists(X,and(P,Q))),Word):-lemma(Word,dtexists).
-lex(n(X^P),Word):- lemma(Word,n), P =.. [Word,X].
-lex(pn(Word^X)^X,Word):- lemma(Word,n).
-lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,ed,Y),P=.. [Word,X].
-lex(tv(K^W^P),Word):-lemma(Word,tv), P=.. [Word,K,W].
-lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X].
-lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y].
+lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):- lemma(Word,dtforall),!.
+lex(dt((X^P)^(X^Q)^exists(X,and(P,Q))),Word):-lemma(Word,dtexists),!.
+lex(n(X^P),Word):- lemma(Word,n), P =.. [Word,X],!.
+lex(pn(Word^X)^X,Word):- lemma(Word,n),!.
+lex(iv(X^P),Word):-lemma(Word,iv), P=.. [Word,X],!.
+lex(tv(K^W^P),Word):-lemma(Word,tv), P=.. [Word,K,W],!.
+lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X],!.
+lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y],!.
 
 %%%%%%%%%% ------------ End My Lexicons
+
+%%%%%%%%%% ------------ Lexicons with inflections
+
+
+lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,d,Y),P=.. [Word,X],!.
+lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,ed,Y),P=.. [Word,X],!.
+lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,ing,Y),P=.. [Word,X],!.
+lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Temp,e,Word),sub_atom(Y,M,N,O,Temp),atom_concat(Temp,ing,Y),P=.. [Word,X],!.
+lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,s,Y),P=.. [Word,X],!.
+
+
+lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,d,Y), P=.. [Word,K,W],!.
+lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,ed,Y), P=.. [Word,K,W],!.
+lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,ing,Y), P=.. [Word,K,W],!.
+lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Temp,e,Word),sub_atom(Y,M,N,O,Temp),atom_concat(Temp,ing,Y),P=.. [Word,K,W],!.
+lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,s,Y), P=.. [Word,K,W],!.
+
+%%%%%%%%%% ------------ End My Lexicons
+
 
 % ...
 
