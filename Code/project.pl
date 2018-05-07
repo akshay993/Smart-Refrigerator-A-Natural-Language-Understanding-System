@@ -105,7 +105,7 @@ lemma(popsicle,n).
 lemma(can,n).
 lemma(skim,n).
 
-%% Adjective and Transitive Verbs
+%% Adjectives and Verbs
 lemma(blue,adj).
 lemma(yellow,adj).
 lemma(drink,tv).
