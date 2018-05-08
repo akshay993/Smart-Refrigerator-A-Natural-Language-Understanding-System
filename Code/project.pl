@@ -143,6 +143,7 @@ lemma(box,n).
 %% Proper Nouns
 lemma(tom,pn).
 lemma(mia,pn).
+lemma(sam,pn).
 
 %% Adjectives
 lemma(blue,adj).
@@ -194,8 +195,9 @@ lemma(what,ip).
 
 lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):- lemma(Word,dtforall),!.
 lex(dt((X^P)^(X^Q)^exists(X,and(P,Q))),Word):-lemma(Word,dtexists),!.
+lex(dt((X^P)^(X^Q)^the(X,and(P,Q))),the).
 lex(n(X^P),Word):- lemma(Word,n), P =.. [Word,X],!.
-lex(pn(Word^X)^X,Word):- lemma(Word,n),!.
+lex(pn((Word^X)^X),Word):- lemma(Word,pn),!.
 lex(iv(X^P),Word):-lemma(Word,iv), P=.. [Word,X],!.
 lex(tv(K^W^P),Word):-lemma(Word,tv), P=.. [Word,K,W],!.
 lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X],!.
@@ -248,7 +250,7 @@ rule(np(X),[pn(X)]).
 rule(n(A^C),[n(A^B),pp((A^B)^C)]).
 rule(n(A),[adj(B^A),n(B)]).
 rule(pp(C),[p(A^B^C),np(A^B)]).
-rule(vp(A),[iv(A)]).
+rule(vp(X),[iv(X)]).
 rule(vp(A^B),[tv(A^C),np(C^B)]).
 rule(s(B),[np(A^B),vp(A)]).
 
