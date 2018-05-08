@@ -93,22 +93,21 @@ srparse(Stack,[Word|Words],M):-
 lemma(is,be).
 lemma(was,be).
 lemma(are,be).
-lemma(on,vacp).
-lemma(to,vacp).
+
 
 %%%%%%%%%% ------------ My Lemmas [Akshay Chopra]
 
 %% Determiners
 lemma(a,dtexists).
 lemma(an,dtexists).
+lemma(the,dtexists).
 lemma(some,dtexists).
+lemma(no,dtnotexists).
 lemma(each,dtforall).
 lemma(all,dtforall).
 lemma(every,dtforall).
-lemma(the,dt).
 
 %% Numerals
-lemma(no,dt).
 lemma(one,dt).
 lemma(two,dt).
 lemma(three,dt).
@@ -169,6 +168,9 @@ lemma(ate,tv).
 lemma(in,p).
 lemma(inside,p).
 lemma(under,p).
+lemma(with,p).
+lemma(on,p).
+lemma(to,p).
 
 %% Interrogative Pronouns
 lemma(who,ip).
@@ -193,9 +195,10 @@ lemma(what,ip).
 
 %%%%%%%%%% ------------ Lexicons
 
+
 lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):- lemma(Word,dtforall),!.
 lex(dt((X^P)^(X^Q)^exists(X,and(P,Q))),Word):-lemma(Word,dtexists),!.
-lex(dt((X^P)^(X^Q)^the(X,and(P,Q))),the).
+lex(dt((X^P)^(X^Q)^not(exists(X,P^Q))), Word):-lemma(Word,dtnotexists),!.
 lex(n(X^P),Word):- lemma(Word,n), P =.. [Word,X],!.
 lex(pn((Word^X)^X),Word):- lemma(Word,pn),!.
 lex(iv(X^P),Word):-lemma(Word,iv), P=.. [Word,X],!.
@@ -203,10 +206,10 @@ lex(tv(K^W^P),Word):-lemma(Word,tv), P=.. [Word,K,W],!.
 lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X],!.
 lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y],!.
 
+
 %%%%%%%%%% ------------ Lexicons
 
 %%%%%%%%%% ------------ Lexicons with inflections
-
 
 lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,d,Y),P=.. [Word,X],!.
 lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,ed,Y),P=.. [Word,X],!.
@@ -220,6 +223,7 @@ lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,ed,Y), P=.. [Word,K,W],!.
 lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,ing,Y), P=.. [Word,K,W],!.
 lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,K,W],!.
 lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,s,Y), P=.. [Word,K,W],!.
+
 
 lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,s,Y), P =.. [Word,X],!.
 lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,es,Y), P =.. [Word,X],!.
@@ -253,6 +257,7 @@ rule(pp(C),[p(A^B^C),np(A^B)]).
 rule(vp(X),[iv(X)]).
 rule(vp(A^B),[tv(A^C),np(C^B)]).
 rule(s(B),[np(A^B),vp(A)]).
+
 
 %%%%%%%%%% ------------ End of Shubham's Rules
 % ...
