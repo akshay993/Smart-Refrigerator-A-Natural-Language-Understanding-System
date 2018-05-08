@@ -56,6 +56,8 @@ process([bye|_]):-
 %parse(Input, SemanticRepresentation):-
 % ...
 
+%% Added temporary SR parser 
+
 sr_parse(Sentence,M):-
         srparse([],Sentence,M).
  
@@ -72,6 +74,8 @@ srparse([X|MoreStack],Words,M):-
 srparse(Stack,[Word|Words],M):-
         lex(X,Word),
         srparse([X|Stack],Words,M).
+		
+%% End of parser
 		
 % ===========================================================
 % Grammar
@@ -186,7 +190,7 @@ lemma(what,ip).
 
 
 
-%%%%%%%%%% ------------ My Lexicons
+%%%%%%%%%% ------------ Lexicons
 
 lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):- lemma(Word,dtforall),!.
 lex(dt((X^P)^(X^Q)^exists(X,and(P,Q))),Word):-lemma(Word,dtexists),!.
@@ -197,7 +201,7 @@ lex(tv(K^W^P),Word):-lemma(Word,tv), P=.. [Word,K,W],!.
 lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X],!.
 lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y],!.
 
-%%%%%%%%%% ------------ End My Lexicons
+%%%%%%%%%% ------------ Lexicons
 
 %%%%%%%%%% ------------ Lexicons with inflections
 
@@ -215,7 +219,13 @@ lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,ing,Y), P=.. [Word,K,W],!.
 lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,K,W],!.
 lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,s,Y), P=.. [Word,K,W],!.
 
-%%%%%%%%%% ------------ End My Lexicons
+lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,s,Y), P =.. [Word,X],!.
+lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,es,Y), P =.. [Word,X],!.
+
+
+
+
+%%%%%%%%%% ------------ End Lexicons with inflections
 
 
 % ...
