@@ -56,6 +56,23 @@ process([bye|_]):-
 %parse(Input, SemanticRepresentation):-
 % ...
 
+sr_parse(Sentence,M):-
+        srparse([],Sentence,M).
+ 
+srparse([X],[],[X]):-numbervars(X,0,_).
+
+srparse([Y,X|MoreStack],Words,M):-
+       rule(LHS,[X,Y]),
+       srparse([LHS|MoreStack],Words,M).
+
+srparse([X|MoreStack],Words,M):-
+       rule(LHS,[X]),
+       srparse([LHS|MoreStack],Words,M).
+
+srparse(Stack,[Word|Words],M):-
+        lex(X,Word),
+        srparse([X|Stack],Words,M).
+		
 % ===========================================================
 % Grammar
 % 1. List of lemmas
@@ -108,6 +125,7 @@ lemma(sandwich,n).
 lemma(meat,n).
 lemma(tofu,n).
 lemma(apple,n).
+lemma(ham,n).
 lemma(vegetable,n).
 lemma(banana,n).
 lemma(watermelon,n).
@@ -187,14 +205,14 @@ lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y],!.
 lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,d,Y),P=.. [Word,X],!.
 lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,ed,Y),P=.. [Word,X],!.
 lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,ing,Y),P=.. [Word,X],!.
-lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Temp,e,Word),sub_atom(Y,M,N,O,Temp),atom_concat(Temp,ing,Y),P=.. [Word,X],!.
+lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,X],!.
 lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,s,Y),P=.. [Word,X],!.
 
 
 lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,d,Y), P=.. [Word,K,W],!.
 lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,ed,Y), P=.. [Word,K,W],!.
 lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,ing,Y), P=.. [Word,K,W],!.
-lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Temp,e,Word),sub_atom(Y,M,N,O,Temp),atom_concat(Temp,ing,Y),P=.. [Word,K,W],!.
+lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,K,W],!.
 lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,s,Y), P=.. [Word,K,W],!.
 
 %%%%%%%%%% ------------ End My Lexicons
