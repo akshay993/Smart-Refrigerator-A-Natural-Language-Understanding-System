@@ -10,13 +10,13 @@
 chat:-
  repeat,
    readinput(Input),
-   process(Input), 
+   process(Input),
   (Input = [bye| _] ),!.
-  
+
 
 % ===========================================================
 % Read input:
-% 1. Read char string from keyboard. 
+% 1. Read char string from keyboard.
 % 2. Convert char string to atom char list.
 % 3. Convert char list to lower case.
 % 4. Tokenize (based on spaces).
@@ -41,7 +41,7 @@ process(Input):-
 	modelchecker(SemanticRepresentation,Evaluation),
 	respond(Evaluation),!,
 	nl,nl.
-	
+
 process([bye|_]):-
    write('> bye!').
 
@@ -56,7 +56,27 @@ process([bye|_]):-
 %parse(Input, SemanticRepresentation):-
 % ...
 
+%% Added temporary SR parser 
 
+sr_parse(Sentence,M):-
+        srparse([],Sentence,M).
+ 
+srparse([X],[],[X]):-numbervars(X,0,_).
+
+srparse([Y,X|MoreStack],Words,M):-
+       rule(LHS,[X,Y]),
+       srparse([LHS|MoreStack],Words,M).
+
+srparse([X|MoreStack],Words,M):-
+       rule(LHS,[X]),
+       srparse([LHS|MoreStack],Words,M).
+
+srparse(Stack,[Word|Words],M):-
+        lex(X,Word),
+        srparse([X|Stack],Words,M).
+		
+%% End of parser
+		
 % ===========================================================
 % Grammar
 % 1. List of lemmas
@@ -68,25 +88,39 @@ process([bye|_]):-
 % Lemmas are uninflected, except for irregular inflection
 % lemma(+Lemma,+Category)
 % --------------------------------------------------------------------
+
+
+lemma(is,be).
+lemma(was,be).
+lemma(are,be).
+lemma(on,vacp).
+lemma(to,vacp).
+
+%%%%%%%%%% ------------ My Lemmas [Akshay Chopra]
+
+%% Determiners
 lemma(a,dtexists).
 lemma(an,dtexists).
+lemma(some,dtexists).
 lemma(each,dtforall).
 lemma(all,dtforall).
 lemma(every,dtforall).
-lemma(box,n).
-lemma(tom,pn).
-lemma(mia,pn).
-lemma(red,adj).
-lemma(is,be).
-lemma(was,be).
-lemma(eat,tv).
-lemma(in,p).
-lemma(under,p).
-lemma(on,vacp).   
-lemma(to,vacp).
+lemma(the,dt).
 
-%%%%%%%%%% ------------ My Lemmas 
+%% Numerals
+lemma(no,dt).
+lemma(one,dt).
+lemma(two,dt).
+lemma(three,dt).
+lemma(four,dt).
+lemma(five,dt).
+lemma(six,dt).
+lemma(seven,dt).
+lemma(eight,dt).
+lemma(nine,dt).
+lemma(ten,dt).
 
+%% Nouns
 lemma(egg,n).
 lemma(shelf,n).
 lemma(fridge,n).
@@ -95,6 +129,7 @@ lemma(sandwich,n).
 lemma(meat,n).
 lemma(tofu,n).
 lemma(apple,n).
+lemma(ham,n).
 lemma(vegetable,n).
 lemma(banana,n).
 lemma(watermelon,n).
@@ -103,29 +138,98 @@ lemma(milk,n).
 lemma(popsicle,n).
 lemma(can,n).
 lemma(skim,n).
+lemma(box,n).
 
+%% Proper Nouns
+lemma(tom,pn).
+lemma(mia,pn).
+lemma(sam,pn).
+
+%% Adjectives
 lemma(blue,adj).
 lemma(yellow,adj).
+lemma(white,adj).
+lemma(green,adj).
+lemma(top,adj).
+lemma(middle,adj).
+lemma(bottom,adj).
+lemma(red,adj).
+lemma(empty,adj).
+
+%% Verbs
+lemma(expire,iv).
 lemma(drink,tv).
+lemma(drank,tv).
+lemma(drunk,tv).
 lemma(contain,tv).
+lemma(eat,tv).
+lemma(ate,tv).
+
+%% Prepositions
+lemma(in,p).
+lemma(inside,p).
+lemma(under,p).
+
+%% Interrogative Pronouns
+lemma(who,ip).
+lemma(which,ip).
+lemma(what,ip).
+
+%% Relative Clauses
+%% lemma(that,rel).
+%% lemma(there,rel).
 
 
-%%%%%%%%%% ------------ End My Lemmas
 
- 
+%%%%%%%%%% ------------ End My Lemmas [Akshay Chopra]
+
+
 % --------------------------------------------------------------------
 % Constructing lexical items:
 % word = lemma + suffix (for "suffix" of size 0 or bigger)
 % --------------------------------------------------------------------
 
 
-lex(n(X^P),Lemma):-
-	lemma(Lemma,n),
-	P=.. [Lemma,X].
 
-lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):-
-		lemma(Word,dtforall).
-				
+%%%%%%%%%% ------------ Lexicons
+
+lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):- lemma(Word,dtforall),!.
+lex(dt((X^P)^(X^Q)^exists(X,and(P,Q))),Word):-lemma(Word,dtexists),!.
+lex(dt((X^P)^(X^Q)^the(X,and(P,Q))),the).
+lex(n(X^P),Word):- lemma(Word,n), P =.. [Word,X],!.
+lex(pn((Word^X)^X),Word):- lemma(Word,pn),!.
+lex(iv(X^P),Word):-lemma(Word,iv), P=.. [Word,X],!.
+lex(tv(K^W^P),Word):-lemma(Word,tv), P=.. [Word,K,W],!.
+lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X],!.
+lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y],!.
+
+%%%%%%%%%% ------------ Lexicons
+
+%%%%%%%%%% ------------ Lexicons with inflections
+
+
+lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,d,Y),P=.. [Word,X],!.
+lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,ed,Y),P=.. [Word,X],!.
+lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,ing,Y),P=.. [Word,X],!.
+lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,X],!.
+lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,s,Y),P=.. [Word,X],!.
+
+
+lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,d,Y), P=.. [Word,K,W],!.
+lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,ed,Y), P=.. [Word,K,W],!.
+lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,ing,Y), P=.. [Word,K,W],!.
+lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,K,W],!.
+lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,s,Y), P=.. [Word,K,W],!.
+
+lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,s,Y), P =.. [Word,X],!.
+lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,es,Y), P =.. [Word,X],!.
+
+
+
+
+%%%%%%%%%% ------------ End Lexicons with inflections
+
+
 % ...
 
 % --------------------------------------------------------------------
@@ -139,10 +243,18 @@ lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):-
 % rule(+LHS,+ListOfRHS)
 % --------------------------------------------------------------------
 
+%%%%%%%%%% ------------ Shubham's Rules
+
 rule(np(Y),[dt(X^Y),n(X)]).
 rule(np(X),[pn(X)]).
-%Shubham's changes
+rule(n(A^C),[n(A^B),pp((A^B)^C)]).
+rule(n(A),[adj(B^A),n(B)]).
+rule(pp(C),[p(A^B^C),np(A^B)]).
+rule(vp(X),[iv(X)]).
+rule(vp(A^B),[tv(A^C),np(C^B)]).
+rule(s(B),[np(A^B),vp(A)]).
 
+%%%%%%%%%% ------------ End of Shubham's Rules
 % ...
 
 
@@ -161,28 +273,27 @@ rule(np(X),[pn(X)]).
 % ===========================================================
 
 % Declarative true in the model
-respond(Evaluation) :- 
-		Evaluation = [true_in_the_model], 
+respond(Evaluation) :-
+		Evaluation = [true_in_the_model],
 		write('That is correct'),!.
 
 % Declarative false in the model
-respond(Evaluation) :- 
-		Evaluation = [not_true_in_the_model],  
+respond(Evaluation) :-
+		Evaluation = [not_true_in_the_model],
 		write('That is not correct'),!.
 
 % Yes-No interrogative true in the model
-respond(Evaluation) :- 
-		Evaluation = [yes_to_question],			
+respond(Evaluation) :-
+		Evaluation = [yes_to_question],
 		write('yes').
 
-% Yes-No interrogative false in the model		
-respond(Evaluation) :- 
-		Evaluation = [no_to_question], 			
+% Yes-No interrogative false in the model
+respond(Evaluation) :-
+		Evaluation = [no_to_question],
 		write('no').
 
 % wh-interrogative true in the model
-% ...							
+% ...
 
 % wh-interrogative false in the model
-% ...							
-
+% ...
