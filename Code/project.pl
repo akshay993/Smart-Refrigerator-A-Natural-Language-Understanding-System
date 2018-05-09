@@ -291,6 +291,8 @@ rule(vp(X^K,[]),[tv(X^Y,[]),np(Y^K)]).
 
 rule(vp(X,WH),[iv(X,WH)]).
 rule(ynq(Y),[be, np(X^Y),vp(X,[])]).
+rule(ynq(Y),[be, np(X^Y),np(X)]).
+rule(ynq(Y),[be, np(X^Y),pp(X)]).
 
 
 
