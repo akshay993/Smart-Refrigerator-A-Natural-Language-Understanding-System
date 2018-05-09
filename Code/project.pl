@@ -173,8 +173,8 @@ lemma(in,p).
 lemma(inside,p).
 lemma(under,p).
 lemma(with,p).
-lemma(on,p).
-lemma(to,p).
+lemma(on,vacp).
+lemma(to,vacp).
 
 %% Interrogative Pronouns
 lemma(who,ip).
@@ -221,6 +221,8 @@ lex(iv(X^P),Word):-lemma(Word,iv), P=.. [Word,X],!.
 lex(tv(K^W^P),Word):-lemma(Word,tv), P=.. [Word,K,W],!.
 lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X],!.
 lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y],!.
+lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,vacp), Z=.. [Word,X,Y],!.
+
 
 
 %%%%%%%%%% ------------ Lexicons
