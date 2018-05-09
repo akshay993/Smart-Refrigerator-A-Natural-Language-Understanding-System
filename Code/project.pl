@@ -176,7 +176,6 @@ lemma(drunk,tv).
 lemma(contain,tv).
 lemma(eat,tv).
 lemma(ate,tv).
-lemma(belong,tv).
 
 %% Prepositions
 lemma(in,p).
@@ -279,7 +278,7 @@ rule(n(A^C),[n(A^B),pp((A^B)^C)]).
 rule(n(A),[adj(B^A),n(B)]).
 rule(pp(C),[p(A^B^C),np(A^B)]).
 %rule(vp(X,[]),[iv(X,[])]).
-rule(vp(A^B,[]),[tv(A^C,[]),pp(C^B)]).
+rule(vp(A^B,[]),[tv(A^C,[]),np(C^B)]).
 rule(s(B,[]),[np(A^B),vp(A,[])]).
 
 
