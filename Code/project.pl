@@ -56,11 +56,11 @@ process([bye|_]):-
 %parse(Input, SemanticRepresentation):-
 % ...
 
-%% Added temporary SR parser 
+%% Added temporary SR parser
 
 sr_parse(Sentence,M):-
         srparse([],Sentence,M).
- 
+
 srparse([X],[],[X]):-numbervars(X,0,_).
 
 srparse([Y,X|MoreStack],Words,M):-
@@ -71,12 +71,16 @@ srparse([X|MoreStack],Words,M):-
        rule(LHS,[X]),
        srparse([LHS|MoreStack],Words,M).
 
+srparse([Z,Y,X|MoreStack],Words,M):-
+      rule(LHS,[X,Y,Z]),
+      sparse([LHS|MoreStack],Words,M).
+
 srparse(Stack,[Word|Words],M):-
         lex(X,Word),
         srparse([X|Stack],Words,M).
-		
+
 %% End of parser
-		
+
 % ===========================================================
 % Grammar
 % 1. List of lemmas
@@ -182,6 +186,18 @@ lemma(what,ip).
 %% lemma(there,rel).
 
 
+%% Auxilary Verbs (be)
+lemma(were,be).
+lemma(will,be).
+lemma(did,be).
+lemma(have,be).
+lemma(had,be).
+lemma(do,be).
+
+%% WHPR
+lemma(who,whpr).
+lemma(what,whpr).
+
 
 %%%%%%%%%% ------------ End My Lemmas [Akshay Chopra]
 
@@ -228,8 +244,8 @@ lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,s,Y), P=.. [Word,K,W],!.
 lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,s,Y), P =.. [Word,X],!.
 lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,es,Y), P =.. [Word,X],!.
 
-
-
+%% Lexicon for Auxilary Verb
+lex(be,Word) :- lemma(Word,be).
 
 %%%%%%%%%% ------------ End Lexicons with inflections
 
@@ -257,6 +273,14 @@ rule(pp(C),[p(A^B^C),np(A^B)]).
 rule(vp(X),[iv(X)]).
 rule(vp(A^B),[tv(A^C),np(C^B)]).
 rule(s(B),[np(A^B),vp(A)]).
+
+
+
+rule(vp(X,WH),[iv(X,WH)]).
+rule(ynq(Y),[be, np(X^Y),vp(X,[])]).
+
+
+
 
 
 %%%%%%%%%% ------------ End of Shubham's Rules
