@@ -53,7 +53,7 @@ process([bye|_]):-
 % 3. Obtain FOL representation for input sentence
 % ===========================================================
 
-%parse(Input, SemanticRepresentation):-
+% parse(Input, SemanticRepresentation):-
 % ...
 
 %% Added temporary SR parser
@@ -147,6 +147,8 @@ lemma(box,n).
 %% Proper Nouns
 lemma(tom,pn).
 lemma(mia,pn).
+lemma(akshay,pn).
+lemma(shubham,pn).
 
 %% Adjectives
 lemma(blue,adj).
@@ -211,7 +213,7 @@ lemma(what,whpr).
 lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):- lemma(Word,dtforall),!.
 lex(dt((X^P)^(X^Q)^exists(X,and(P,Q))),Word):-lemma(Word,dtexists),!.
 lex(n(X^P),Word):- lemma(Word,n), P =.. [Word,X],!.
-lex(pn(Word^X)^X,Word):- lemma(Word,n),!.
+lex(pn(Word^X)^X,Word):- lemma(Word,pn),!.
 lex(iv(X^P),Word):-lemma(Word,iv), P=.. [Word,X],!.
 lex(tv(K^W^P),Word):-lemma(Word,tv), P=.. [Word,K,W],!.
 lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X],!.
