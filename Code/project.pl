@@ -61,7 +61,18 @@ process([bye|_]):-
 sr_parse(Sentence,M):-
         srparse([],Sentence,M).
 
-srparse([X],[],[X]):-numbervars(X,0,_).
+%srparse([X],[],[X]):-numbervars(X,0,_).
+srparse([X],[],[X]).
+
+
+srparse([Z,Y,X|MoreStack],Words,M):-
+      rule(LHS,[X,Y,Z]),
+      srparse([LHS|MoreStack],Words,M).
+
+srparse([Z,Y,X|MoreStack],Words,M):-
+      rule(LHS,[X,Y]),
+      srparse([Z,LHS|MoreStack],Words,M).
+
 
 srparse([Y,X|MoreStack],Words,M):-
        rule(LHS,[X,Y]),
@@ -71,9 +82,7 @@ srparse([X|MoreStack],Words,M):-
        rule(LHS,[X]),
        srparse([LHS|MoreStack],Words,M).
 
-srparse([Z,Y,X|MoreStack],Words,M):-
-      rule(LHS,[X,Y,Z]),
-      sparse([LHS|MoreStack],Words,M).
+
 
 srparse(Stack,[Word|Words],M):-
         lex(X,Word),
@@ -217,8 +226,8 @@ lex(dt((X^P)^(X^Q)^exists(X,and(P,Q))),Word):-lemma(Word,dtexists),!.
 lex(dt((X^P)^(X^Q)^not(exists(X,P^Q))), Word):-lemma(Word,dtnotexists),!.
 lex(n(X^P),Word):- lemma(Word,n), P =.. [Word,X],!.
 lex(pn((Word^X)^X),Word):- lemma(Word,pn),!.
-lex(iv(X^P),Word):-lemma(Word,iv), P=.. [Word,X],!.
-lex(tv(K^W^P),Word):-lemma(Word,tv), P=.. [Word,K,W],!.
+lex(iv(X^P,[]),Word):-lemma(Word,iv), P=.. [Word,X],!.
+lex(tv(K^W^P,[]),Word):-lemma(Word,tv), P=.. [Word,K,W],!.
 lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X],!.
 lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y],!.
 lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,vacp), Z=.. [Word,X,Y],!.
@@ -229,18 +238,18 @@ lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,vacp), Z=.. [Word,X,Y],!.
 
 %%%%%%%%%% ------------ Lexicons with inflections
 
-lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,d,Y),P=.. [Word,X],!.
-lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,ed,Y),P=.. [Word,X],!.
-lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,ing,Y),P=.. [Word,X],!.
-lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,X],!.
-lex(iv(X^P),Y):-lemma(Word,iv),atom_concat(Word,s,Y),P=.. [Word,X],!.
+lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Word,d,Y),P=.. [Word,X],!.
+lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Word,ed,Y),P=.. [Word,X],!.
+lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Word,ing,Y),P=.. [Word,X],!.
+lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,X],!.
+lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Word,s,Y),P=.. [Word,X],!.
 
 
-lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,d,Y), P=.. [Word,K,W],!.
-lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,ed,Y), P=.. [Word,K,W],!.
-lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,ing,Y), P=.. [Word,K,W],!.
-lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,K,W],!.
-lex(tv(K^W^P),Y):-lemma(Word,tv),atom_concat(Word,s,Y), P=.. [Word,K,W],!.
+lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Word,d,Y), P=.. [Word,K,W],!.
+lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Word,ed,Y), P=.. [Word,K,W],!.
+lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Word,ing,Y), P=.. [Word,K,W],!.
+lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,K,W],!.
+lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Word,s,Y), P=.. [Word,K,W],!.
 
 
 lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,s,Y), P =.. [Word,X],!.
@@ -272,11 +281,13 @@ rule(np(X),[pn(X)]).
 rule(n(A^C),[n(A^B),pp((A^B)^C)]).
 rule(n(A),[adj(B^A),n(B)]).
 rule(pp(C),[p(A^B^C),np(A^B)]).
-rule(vp(X),[iv(X)]).
-rule(vp(A^B),[tv(A^C),np(C^B)]).
-rule(s(B),[np(A^B),vp(A)]).
+%rule(vp(X,[]),[iv(X,[])]).
+rule(vp(A^B,[]),[tv(A^C,[]),np(C^B)]).
+rule(s(B,[]),[np(A^B),vp(A,[])]).
 
 
+
+rule(vp(X^K,[]),[tv(X^Y,[]),np(Y^K)]).
 
 rule(vp(X,WH),[iv(X,WH)]).
 rule(ynq(Y),[be, np(X^Y),vp(X,[])]).
