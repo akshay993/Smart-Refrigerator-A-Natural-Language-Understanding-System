@@ -176,6 +176,7 @@ lemma(drunk,tv).
 lemma(contain,tv).
 lemma(eat,tv).
 lemma(ate,tv).
+lemma(belong,tv).
 
 %% Prepositions
 lemma(in,p).
@@ -184,11 +185,6 @@ lemma(under,p).
 lemma(with,p).
 lemma(on,vacp).
 lemma(to,vacp).
-
-%% Interrogative Pronouns
-lemma(who,ip).
-lemma(which,ip).
-lemma(what,ip).
 
 %% Relative Clauses
 %% lemma(that,rel).
@@ -231,7 +227,8 @@ lex(tv(K^W^P,[]),Word):-lemma(Word,tv), P=.. [Word,K,W],!.
 lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X],!.
 lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y],!.
 lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,vacp), Z=.. [Word,X,Y],!.
-
+lex(whpr((X^P)^q(X,and(P,person))),who):- lemma(who,whpr).
+lex(whpr((X^P)^q(X,and(P,thing))),what):- lemma(what,whpr).
 
 
 %%%%%%%%%% ------------ Lexicons
@@ -282,20 +279,21 @@ rule(n(A^C),[n(A^B),pp((A^B)^C)]).
 rule(n(A),[adj(B^A),n(B)]).
 rule(pp(C),[p(A^B^C),np(A^B)]).
 %rule(vp(X,[]),[iv(X,[])]).
-rule(vp(A^B,[]),[tv(A^C,[]),np(C^B)]).
+rule(vp(A^B,[]),[tv(A^C,[]),pp(C^B)]).
 rule(s(B,[]),[np(A^B),vp(A,[])]).
 
 
 
 rule(vp(X^K,[]),[tv(X^Y,[]),np(Y^K)]).
-
 rule(vp(X,WH),[iv(X,WH)]).
+rule(s(X,WH),[vp(X,WH)]).
 rule(ynq(Y),[be, np(X^Y),vp(X,[])]).
 rule(ynq(Y),[be, np(X^Y),np(X)]).
 rule(ynq(Y),[be, np(X^Y),pp(X)]).
-
-
-
+rule(Y,[whpr(X^Y),vp(X,[])]).
+rule(Y,[whpr(X^Y),be,pp(X)]).
+rule(Z,[whpr((X^Y)^Z), inv_s(Y,[X])]).
+rule(inv_s(Y,[WH]),[aux, np(X^Y),vp(X,[WH])]).
 
 
 %%%%%%%%%% ------------ End of Shubham's Rules
