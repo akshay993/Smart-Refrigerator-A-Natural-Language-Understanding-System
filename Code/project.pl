@@ -113,6 +113,7 @@ lemma(a,dtexists).
 lemma(an,dtexists).
 lemma(the,dtexists).
 lemma(some,dtexists).
+lemma(there,dtexists).
 lemma(no,dtnotexists).
 lemma(each,dtforall).
 lemma(all,dtforall).
@@ -189,7 +190,6 @@ lemma(to,vacp).
 
 %% Relative Clauses
 lemma(that,rel).
-lemma(there,rel).
 lemma(which,rel).
 lemma(who,rel).
 
@@ -220,18 +220,38 @@ lemma(what,whpr).
 
 %%%%%%%%%% ------------ Lexicons
 
-
+%DT_ForAll
 lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):- lemma(Word,dtforall),!.
+
+%DT_Exists
 lex(dt((X^P)^(X^Q)^exists(X,and(P,Q))),Word):-lemma(Word,dtexists),!.
+
+%DT_NotExisits
 lex(dt((X^P)^(X^Q)^not(exists(X,P^Q))), Word):-lemma(Word,dtnotexists),!.
+
+%Noun
 lex(n(X^P),Word):- lemma(Word,n), P =.. [Word,X],!.
+
+%Proper_Noun
 lex(pn((Word^X)^X),Word):- lemma(Word,pn),!.
+
+%Intransitive_Verb
 lex(iv(X^P,[]),Word):-lemma(Word,iv), P=.. [Word,X],!.
+
+%Transitive_Verb
 lex(tv(K^W^P,[]),Word):-lemma(Word,tv), P=.. [Word,K,W],!.
+
+%Adjective
 lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X],!.
+
+%Preposition
 lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y],!.
+
+%WHPR
 lex(whpr((X^P)^q(X,and(P,person))),who):- lemma(who,whpr).
 lex(whpr((X^P)^q(X,and(P,thing))),what):- lemma(what,whpr).
+
+%Numerals
 lex(dt((X^P)^(X^Q)^two(X,and(P,Q))),two):- lemma(two,two),!.
 lex(dt((X^P)^(X^Q)^three(X,and(P,Q))),three):- lemma(three,three),!.
 lex(dt((X^P)^(X^Q)^four(X,and(P,Q))),four):- lemma(four,four),!.
@@ -242,6 +262,7 @@ lex(dt((X^P)^(X^Q)^eight(X,and(P,Q))),eight):- lemma(eight,eight),!.
 lex(dt((X^P)^(X^Q)^nine(X,and(P,Q))),nine):- lemma(nine,nine),!.
 lex(dt((X^P)^(X^Q)^ten(X,and(P,Q))),ten):- lemma(ten,ten),!.
 
+%VACP
 lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,vacp), Z=.. [Word,X,Y],!.
 
 
@@ -321,7 +342,6 @@ rule(inv_s(Y,[WH]),[aux, np(X^Y),vp(X,[WH])]).
 
 rule(rc(Y,[X]),[rel,s(Y,[X])]).
 rule(rc(Y,[]),[rel,vp(Y,[])]).
-rule(np(Y),[rel,np(Y)]).
 
 rule(n(X^and(Y,Z)),[n(X^Y),rc(X^Z,[])]).
 rule(n(X^and(Y,Z)),[n(X^Y),rc(Z,[X])]).
