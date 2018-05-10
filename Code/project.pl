@@ -274,6 +274,7 @@ lex(be,Word) :- lemma(Word,be).
 
 rule(np(Y),[dt(X^Y),n(X)]).
 rule(np(X),[pn(X)]).
+rule(np(X),[n(X)]).
 rule(n(A^C),[n(A^B),pp((A^B)^C)]).
 rule(n(A),[adj(B^A),n(B)]).
 rule(pp(C),[p(A^B^C),np(A^B)]).
