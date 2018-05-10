@@ -197,6 +197,7 @@ lemma(did,be).
 lemma(have,be).
 lemma(had,be).
 lemma(do,be).
+lemma(did,be).
 
 %% WHPR
 lemma(who,whpr).
@@ -278,12 +279,10 @@ rule(np(X),[n(X)]).
 rule(n(A^C),[n(A^B),pp((A^B)^C)]).
 rule(n(A),[adj(B^A),n(B)]).
 rule(pp(C),[p(A^B^C),np(A^B)]).
-%rule(vp(X,[]),[iv(X,[])]).
 rule(vp(A^B,[]),[tv(A^C,[]),np(C^B)]).
 rule(s(B,[]),[np(A^B),vp(A,[])]).
 
-
-
+rule(iv(X,[WH]),[tv(X^WH,[])]).
 rule(vp(X^K,[]),[tv(X^Y,[]),np(Y^K)]).
 rule(vp(X,WH),[iv(X,WH)]).
 rule(s(X,WH),[vp(X,WH)]).
