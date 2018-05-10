@@ -61,9 +61,7 @@ process([bye|_]):-
 sr_parse(Sentence,M):-
         srparse([],Sentence,M).
 
-%srparse([X],[],[X]):-numbervars(X,0,_).
 srparse([X],[],[X]).
-
 
 srparse([Z,Y,X|MoreStack],Words,M):-
       rule(LHS,[X,Y,Z]),
@@ -121,16 +119,16 @@ lemma(all,dtforall).
 lemma(every,dtforall).
 
 %% Numerals
-lemma(one,dt).
-lemma(two,dt).
-lemma(three,dt).
-lemma(four,dt).
-lemma(five,dt).
-lemma(six,dt).
-lemma(seven,dt).
-lemma(eight,dt).
-lemma(nine,dt).
-lemma(ten,dt).
+lemma(one,one).
+lemma(two,two).
+lemma(three,three).
+lemma(four,four).
+lemma(five,five).
+lemma(six,six).
+lemma(seven,seven).
+lemma(eight,eight).
+lemma(nine,nine).
+lemma(ten,ten).
 
 %% Nouns
 lemma(egg,n).
@@ -142,6 +140,7 @@ lemma(meat,n).
 lemma(tofu,n).
 lemma(apple,n).
 lemma(ham,n).
+lemma(bowl,n).
 lemma(vegetable,n).
 lemma(banana,n).
 lemma(watermelon,n).
@@ -167,6 +166,8 @@ lemma(middle,adj).
 lemma(bottom,adj).
 lemma(red,adj).
 lemma(empty,adj).
+lemma(angry,adj).
+
 
 %% Verbs
 lemma(expire,iv).
@@ -176,6 +177,7 @@ lemma(drunk,tv).
 lemma(contain,tv).
 lemma(eat,tv).
 lemma(ate,tv).
+lemma(put,dtv).
 
 %% Prepositions
 lemma(in,p).
@@ -186,8 +188,10 @@ lemma(on,vacp).
 lemma(to,vacp).
 
 %% Relative Clauses
-%% lemma(that,rel).
-%% lemma(there,rel).
+lemma(that,rel).
+lemma(there,rel).
+lemma(which,rel).
+lemma(who,rel).
 
 
 %% Auxilary Verbs (be)
@@ -226,9 +230,22 @@ lex(iv(X^P,[]),Word):-lemma(Word,iv), P=.. [Word,X],!.
 lex(tv(K^W^P,[]),Word):-lemma(Word,tv), P=.. [Word,K,W],!.
 lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X],!.
 lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y],!.
-lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,vacp), Z=.. [Word,X,Y],!.
 lex(whpr((X^P)^q(X,and(P,person))),who):- lemma(who,whpr).
 lex(whpr((X^P)^q(X,and(P,thing))),what):- lemma(what,whpr).
+lex(dt((X^P)^(X^Q)^two(X,and(P,Q))),two):- lemma(two,two),!.
+lex(dt((X^P)^(X^Q)^three(X,and(P,Q))),three):- lemma(three,three),!.
+lex(dt((X^P)^(X^Q)^four(X,and(P,Q))),four):- lemma(four,four),!.
+lex(dt((X^P)^(X^Q)^five(X,and(P,Q))),five):- lemma(five,five),!.
+lex(dt((X^P)^(X^Q)^six(X,and(P,Q))),six):- lemma(six,six),!.
+lex(dt((X^P)^(X^Q)^seven(X,and(P,Q))),seven):- lemma(seven,seven),!.
+lex(dt((X^P)^(X^Q)^eight(X,and(P,Q))),eight):- lemma(eight,eight),!.
+lex(dt((X^P)^(X^Q)^nine(X,and(P,Q))),nine):- lemma(nine,nine),!.
+lex(dt((X^P)^(X^Q)^ten(X,and(P,Q))),ten):- lemma(ten,ten),!.
+
+lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,vacp), Z=.. [Word,X,Y],!.
+
+
+
 
 
 %%%%%%%%%% ------------ Lexicons
@@ -254,6 +271,7 @@ lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,es,Y), P =.. [Word,X],!.
 
 %% Lexicon for Auxilary Verb
 lex(be,Word) :- lemma(Word,be).
+lex(rel,Word):- lemma(Word,rel).
 
 %%%%%%%%%% ------------ End Lexicons with inflections
 
@@ -281,18 +299,32 @@ rule(n(A),[adj(B^A),n(B)]).
 rule(pp(C),[p(A^B^C),np(A^B)]).
 rule(vp(A^B,[]),[tv(A^C,[]),np(C^B)]).
 rule(s(B,[]),[np(A^B),vp(A,[])]).
-
-rule(iv(X,[WH]),[tv(X^WH,[])]).
-rule(vp(X^K,[]),[tv(X^Y,[]),np(Y^K)]).
+rule(ap(A),[adj(B^A),pp(B)]).
 rule(vp(X,WH),[iv(X,WH)]).
 rule(s(X,WH),[vp(X,WH)]).
+
 rule(ynq(Y),[be, np(X^Y),vp(X,[])]).
+
 rule(ynq(Y),[be, np(X^Y),np(X)]).
+rule(ynq(X^A),[be, np(X^T),np(T^A)]).
+
+rule(s(B,[]),[whpr(A^B),vp(A,[])]).
 rule(ynq(Y),[be, np(X^Y),pp(X)]).
+rule(ynq(X^Y),[be, np(X^A),ap(A^Y)]).
 rule(Y,[whpr(X^Y),vp(X,[])]).
 rule(Y,[whpr(X^Y),be,pp(X)]).
 rule(Z,[whpr((X^Y)^Z), inv_s(Y,[X])]).
 rule(inv_s(Y,[WH]),[aux, np(X^Y),vp(X,[WH])]).
+
+
+%% rule(iv(X,[WH]),[tv(X^WH,[])]).
+
+rule(rc(Y,[X]),[rel,s(Y,[X])]).
+rule(rc(Y,[]),[rel,vp(Y,[])]).
+rule(np(Y),[rel,np(Y)]).
+
+rule(n(X^and(Y,Z)),[n(X^Y),rc(X^Z,[])]).
+rule(n(X^and(Y,Z)),[n(X^Y),rc(Z,[X])]).
 
 
 %%%%%%%%%% ------------ End of Shubham's Rules
