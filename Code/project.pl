@@ -225,7 +225,7 @@ lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):- lemma(Word,dtforall),!.
 lex(dt((X^P)^(X^Q)^exists(X,and(P,Q))),Word):-lemma(Word,dtexists),!.
 
 %DT_NotExisits
-lex(dt((X^P)^(X^Q)^not(exists(X,P^Q))), Word):-lemma(Word,dtnotexists),!.
+lex(dt((X^P)^(X^Q)^not(exists(X,and(P,Q)))), Word):-lemma(Word,dtnotexists),!.
 
 %Noun
 lex(n(X^P),Word):- lemma(Word,n), P =.. [Word,X],!.
@@ -318,41 +318,29 @@ rule(np(Y),[dt(X^Y),n(X)]).
 rule(np(X),[pn(X)]).
 rule(n(A^C),[n(A^B),pp1((A^B)^C)]).
 rule(n(A),[adj(B^A),n(B)]).
-
 rule(pp1(C),[p1(A^B^C),np(A^B)]).
 rule(pp2(A^B),[p2(A^C),np(C^B)]).
-
 rule(vp(A^B,[]),[tv(A^C,[]),np(C^B)]).
-
 rule(ynq(Y),[be, np(X^Y),vp(X,[])]).
-
 rule(s(B,[]),[np(A^B),vp(A,[])]).
-rule(ap(A),[adj(B^A),pp1(B)]).
 rule(vp(X,WH),[iv(X,WH)]).
 rule(s(X,WH),[vp(X,WH)]).
-
 rule(ynq(Y),[be, np(X^Y),pp2(X)]).
-
 rule(Y,[whpr(X^Y),vp(X,[])]).
-rule(Y,[whpr(X^Y),be,pp1(X)]).
-rule(Z,[whpr((X^Y)^Z), inv_s(Y,[X])]).
-rule(inv_s(Y,[WH]),[be, np(X^Y),vp(X,[WH])]).
-
-rule(np(X),[there,np(X)]).
-
-%% rule(iv(X,[WH]),[tv(X^WH,[])]).
-
+rule(Y,[whpr(X^Y),be,pp2(X)]).
 rule(rc(Y,[X]),[rel,s(Y,[X])]).
 rule(rc(Y,[]),[rel,vp(Y,[])]).
-
-
 rule(n(X^and(Y,Z)),[n(X^Y),rc(X^Z,[])]).
 rule(n(X^and(Y,Z)),[n(X^Y),rc(Z,[X])]).
+rule(iv(X^A,[Y]),[tv(X^Y^A,[])]).
+rule(tv(Y^A,[X]),[tv(X^Y^A,[])]).
+rule(Z,[whpr((X^Y)^Z), inv_s(Y,[X])]).
+rule(inv_s(Y,[WH]),[be, np(X^Y),vp(X,[WH])]).
+rule(np(X),[there,np(X)]).
 
+%notworking
 rule(ynq(Y),[be, np(X^Y),np(X)]).
 rule(ynq(X^A),[be, np(X^T),np(T^A)]).
-
-rule(ynq(X^Y),[be, np(X^A),ap(A^Y)]).
 
 %%%% ------------------- End of Rules
 
