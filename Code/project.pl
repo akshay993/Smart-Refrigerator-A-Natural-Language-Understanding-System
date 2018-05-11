@@ -174,6 +174,9 @@ lemma(drink,tv).
 lemma(drank,tv).
 lemma(drunk,tv).
 lemma(contain,tv).
+lemma(have,tv).
+lemma(had,tv).
+lemma(has,tv).
 lemma(eat,tv).
 lemma(ate,tv).
 lemma(put,dtv).
@@ -195,12 +198,11 @@ lemma(who,rel).
 %% Auxilary Verbs (be)
 lemma(were,be).
 lemma(will,be).
-lemma(did,be).
-lemma(have,be).
-lemma(had,be).
 lemma(has,be).
-lemma(do,be).
+lemma(had,be).
+lemma(have,be).
 lemma(did,be).
+lemma(do,be).
 
 %% WHPR
 lemma(who,whpr).
@@ -219,51 +221,51 @@ lemma(what,whpr).
 %%%%%%%%%% ------------ Lexicons
 
 %DT_ForAll
-lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):- lemma(Word,dtforall),!.
+lex(dt((X^P)^(X^Q)^forall(X,imp(P,Q))),Word):- lemma(Word,dtforall).
 
 %DT_Exists
-lex(dt((X^P)^(X^Q)^exists(X,and(P,Q))),Word):-lemma(Word,dtexists),!.
+lex(dt((X^P)^(X^Q)^exists(X,and(P,Q))),Word):-lemma(Word,dtexists).
 
 %DT_NotExisits
-lex(dt((X^P)^(X^Q)^not(exists(X,and(P,Q)))), Word):-lemma(Word,dtnotexists),!.
+lex(dt((X^P)^(X^Q)^not(exists(X,and(P,Q)))), Word):-lemma(Word,dtnotexists).
 
 %Noun
-lex(n(X^P),Word):- lemma(Word,n), P =.. [Word,X],!.
+lex(n(X^P),Word):- lemma(Word,n), P =.. [Word,X].
 
 %Proper_Noun
-lex(pn((Word^X)^X),Word):- lemma(Word,pn),!.
+lex(pn((Word^X)^X),Word):- lemma(Word,pn).
 
 %Intransitive_Verb
-lex(iv(X^P,[]),Word):-lemma(Word,iv), P=.. [Word,X],!.
+lex(iv(X^P,[]),Word):-lemma(Word,iv), P=.. [Word,X].
 
 %Transitive_Verb
-lex(tv(K^W^P,[]),Word):-lemma(Word,tv), P=.. [Word,K,W],!.
+lex(tv(K^W^P,[]),Word):-lemma(Word,tv), P=.. [Word,K,W].
 
 %Adjective
-lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X],!.
+lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X].
 
 %Preposition
-lex(p2(K^W^P),Word):-lemma(Word,p), P=.. [Word,K,W],!.
+lex(p2(K^W^P),Word):-lemma(Word,p), P=.. [Word,K,W].
 
-lex(p1((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y],!.
+lex(p1((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y].
 
 %WHPR
 lex(whpr((X^P)^q(X,and(P,person))),who):- lemma(who,whpr).
 lex(whpr((X^P)^q(X,and(P,thing))),what):- lemma(what,whpr).
 
 %Numerals
-lex(dt((X^P)^(X^Q)^two(X,and(P,Q))),two):- lemma(two,two),!.
-lex(dt((X^P)^(X^Q)^three(X,and(P,Q))),three):- lemma(three,three),!.
-lex(dt((X^P)^(X^Q)^four(X,and(P,Q))),four):- lemma(four,four),!.
-lex(dt((X^P)^(X^Q)^five(X,and(P,Q))),five):- lemma(five,five),!.
-lex(dt((X^P)^(X^Q)^six(X,and(P,Q))),six):- lemma(six,six),!.
-lex(dt((X^P)^(X^Q)^seven(X,and(P,Q))),seven):- lemma(seven,seven),!.
-lex(dt((X^P)^(X^Q)^eight(X,and(P,Q))),eight):- lemma(eight,eight),!.
-lex(dt((X^P)^(X^Q)^nine(X,and(P,Q))),nine):- lemma(nine,nine),!.
-lex(dt((X^P)^(X^Q)^ten(X,and(P,Q))),ten):- lemma(ten,ten),!.
+lex(dt((X^P)^(X^Q)^two(X,and(P,Q))),two):- lemma(two,two).
+lex(dt((X^P)^(X^Q)^three(X,and(P,Q))),three):- lemma(three,three).
+lex(dt((X^P)^(X^Q)^four(X,and(P,Q))),four):- lemma(four,four).
+lex(dt((X^P)^(X^Q)^five(X,and(P,Q))),five):- lemma(five,five).
+lex(dt((X^P)^(X^Q)^six(X,and(P,Q))),six):- lemma(six,six).
+lex(dt((X^P)^(X^Q)^seven(X,and(P,Q))),seven):- lemma(seven,seven).
+lex(dt((X^P)^(X^Q)^eight(X,and(P,Q))),eight):- lemma(eight,eight).
+lex(dt((X^P)^(X^Q)^nine(X,and(P,Q))),nine):- lemma(nine,nine).
+lex(dt((X^P)^(X^Q)^ten(X,and(P,Q))),ten):- lemma(ten,ten).
 
 %VACP
-lex(p1((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,vacp), Z=.. [Word,X,Y],!.
+lex(p1((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,vacp), Z=.. [Word,X,Y].
 
 %Auxilary_Verb
 lex(be,Word) :- lemma(Word,be).
@@ -276,17 +278,17 @@ lex(there,there).
 
 %%%%%%%%%% ------------ Lexicons with inflections
 
-lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Word,M,Y),suffix(M),P=.. [Word,X],!.
-lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,X],!.
+lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Word,M,Y),suffix(M),P=.. [Word,X].
+lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,X].
 
-lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Word,M,Y),suffix(M),P=.. [Word,K,W],!.
-lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,K,W],!.
+lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Word,M,Y),suffix(M),P=.. [Word,K,W].
+lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,K,W].
 
-lex(be,Y):-lemma(Word,be),atom_concat(Word,M,Y),suffix(M),!.
-lex(be,Y):-lemma(Word,be),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),!.
+lex(be,Y):-lemma(Word,be),atom_concat(Word,M,Y),suffix(M).
+lex(be,Y):-lemma(Word,be),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y).
 
-lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,s,Y), P =.. [Word,X],!.
-lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,es,Y), P =.. [Word,X],!.
+lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,s,Y), P =.. [Word,X].
+lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,es,Y), P =.. [Word,X].
 
 
 %%%%%%%%%% ------------ End Lexicons with inflections
@@ -353,7 +355,9 @@ rule(ynq(X^A),[be, np(X^T),np(T^A)]).
 %  3. If input is a content question, find answer
 % ===========================================================
 
-% model(...,...)
+%model([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z],
+%           [[bowl,[a,b]],[yellow,[b]],[egg,[c,d]],[milk[l]],[shelf[h,i,m]],[bottom[i]],[container[e,f,g]],
+%			[white[e,f]],[banana[j,k]],[expire,[l]],[on[[e,i],[f,i]]],[contain,[[a,c],[b,d],[e,j]]]]).
 
 % ===========================================================
 %  Respond
