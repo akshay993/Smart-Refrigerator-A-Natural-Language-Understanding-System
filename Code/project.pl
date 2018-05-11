@@ -56,9 +56,9 @@ process([bye|_]):-
 %parse(Input, SemanticRepresentation):-
 % ...
 
-%% Added temporary SR parser
+%% Added SR parser
 
-sr_parse(Sentence,M):-
+parse(Sentence,M):-
         srparse([],Sentence,M).
 
 srparse([X],[],[X]).
@@ -106,14 +106,13 @@ lemma(was,be).
 lemma(are,be).
 
 
-%%%%%%%%%% ------------ My Lemmas [Akshay Chopra]
+%%%%%%%%%% ------------ Lemmas
 
 %% Determiners
 lemma(a,dtexists).
 lemma(an,dtexists).
 lemma(the,dtexists).
 lemma(some,dtexists).
-lemma(there,dtexists).
 lemma(no,dtnotexists).
 lemma(each,dtforall).
 lemma(all,dtforall).
@@ -167,7 +166,6 @@ lemma(middle,adj).
 lemma(bottom,adj).
 lemma(red,adj).
 lemma(empty,adj).
-lemma(angry,adj).
 
 
 %% Verbs
@@ -185,8 +183,8 @@ lemma(in,p).
 lemma(inside,p).
 lemma(under,p).
 lemma(with,p).
-lemma(on,vacp).
-lemma(to,vacp).
+lemma(on,p).
+lemma(to,p).
 
 %% Relative Clauses
 lemma(that,rel).
@@ -200,6 +198,7 @@ lemma(will,be).
 lemma(did,be).
 lemma(have,be).
 lemma(had,be).
+lemma(has,be).
 lemma(do,be).
 lemma(did,be).
 
@@ -207,8 +206,7 @@ lemma(did,be).
 lemma(who,whpr).
 lemma(what,whpr).
 
-
-%%%%%%%%%% ------------ End My Lemmas [Akshay Chopra]
+%%%%%%%%%% ------------ End Lemmas
 
 
 % --------------------------------------------------------------------
@@ -245,7 +243,9 @@ lex(tv(K^W^P,[]),Word):-lemma(Word,tv), P=.. [Word,K,W],!.
 lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X],!.
 
 %Preposition
-lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y],!.
+lex(p2(K^W^P),Word):-lemma(Word,p), P=.. [Word,K,W],!.
+
+lex(p1((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y],!.
 
 %WHPR
 lex(whpr((X^P)^q(X,and(P,person))),who):- lemma(who,whpr).
@@ -263,36 +263,31 @@ lex(dt((X^P)^(X^Q)^nine(X,and(P,Q))),nine):- lemma(nine,nine),!.
 lex(dt((X^P)^(X^Q)^ten(X,and(P,Q))),ten):- lemma(ten,ten),!.
 
 %VACP
-lex(p((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,vacp), Z=.. [Word,X,Y],!.
+lex(p1((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,vacp), Z=.. [Word,X,Y],!.
 
+%Auxilary_Verb
+lex(be,Word) :- lemma(Word,be).
+lex(rel,Word):- lemma(Word,rel).
 
-
+lex(there,there).
 
 
 %%%%%%%%%% ------------ Lexicons
 
 %%%%%%%%%% ------------ Lexicons with inflections
 
-lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Word,d,Y),P=.. [Word,X],!.
-lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Word,ed,Y),P=.. [Word,X],!.
-lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Word,ing,Y),P=.. [Word,X],!.
+lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Word,M,Y),suffix(M),P=.. [Word,X],!.
 lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,X],!.
-lex(iv(X^P,[]),Y):-lemma(Word,iv),atom_concat(Word,s,Y),P=.. [Word,X],!.
 
-
-lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Word,d,Y), P=.. [Word,K,W],!.
-lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Word,ed,Y), P=.. [Word,K,W],!.
-lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Word,ing,Y), P=.. [Word,K,W],!.
+lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Word,M,Y),suffix(M),P=.. [Word,K,W],!.
 lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),P=.. [Word,K,W],!.
-lex(tv(K^W^P,[]),Y):-lemma(Word,tv),atom_concat(Word,s,Y), P=.. [Word,K,W],!.
 
+lex(be,Y):-lemma(Word,be),atom_concat(Word,M,Y),suffix(M),!.
+lex(be,Y):-lemma(Word,be),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_concat(Temp,ing,Y),!.
 
 lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,s,Y), P =.. [Word,X],!.
 lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,es,Y), P =.. [Word,X],!.
 
-%% Lexicon for Auxilary Verb
-lex(be,Word) :- lemma(Word,be).
-lex(rel,Word):- lemma(Word,rel).
 
 %%%%%%%%%% ------------ End Lexicons with inflections
 
@@ -302,6 +297,11 @@ lex(rel,Word):- lemma(Word,rel).
 % --------------------------------------------------------------------
 % Suffix types
 % --------------------------------------------------------------------
+suffix(s).
+suffix(es).
+suffix(ed).
+suffix(d).
+suffix(ing).
 
 % ...
 
@@ -310,45 +310,52 @@ lex(rel,Word):- lemma(Word,rel).
 % rule(+LHS,+ListOfRHS)
 % --------------------------------------------------------------------
 
-%%%%%%%%%% ------------ Shubham's Rules
+%%%% -------------------- Rules
 
+
+rule(np((X^Y)^exists(X,and(Z,Y))),[n(X^Z)]).
 rule(np(Y),[dt(X^Y),n(X)]).
 rule(np(X),[pn(X)]).
-rule(np(X),[n(X)]).
-rule(n(A^C),[n(A^B),pp((A^B)^C)]).
+rule(n(A^C),[n(A^B),pp1((A^B)^C)]).
 rule(n(A),[adj(B^A),n(B)]).
-rule(pp(C),[p(A^B^C),np(A^B)]).
+
+rule(pp1(C),[p1(A^B^C),np(A^B)]).
+rule(pp2(A^B),[p2(A^C),np(C^B)]).
+
 rule(vp(A^B,[]),[tv(A^C,[]),np(C^B)]).
-rule(s(B,[]),[np(A^B),vp(A,[])]).
-rule(ap(A),[adj(B^A),pp(B)]).
-rule(vp(X,WH),[iv(X,WH)]).
-rule(s(X,WH),[vp(X,WH)]).
 
 rule(ynq(Y),[be, np(X^Y),vp(X,[])]).
 
-rule(ynq(Y),[be, np(X^Y),np(X)]).
-rule(ynq(X^A),[be, np(X^T),np(T^A)]).
+rule(s(B,[]),[np(A^B),vp(A,[])]).
+rule(ap(A),[adj(B^A),pp1(B)]).
+rule(vp(X,WH),[iv(X,WH)]).
+rule(s(X,WH),[vp(X,WH)]).
 
-rule(s(B,[]),[whpr(A^B),vp(A,[])]).
-rule(ynq(Y),[be, np(X^Y),pp(X)]).
-rule(ynq(X^Y),[be, np(X^A),ap(A^Y)]).
+rule(ynq(Y),[be, np(X^Y),pp2(X)]).
+
 rule(Y,[whpr(X^Y),vp(X,[])]).
-rule(Y,[whpr(X^Y),be,pp(X)]).
+rule(Y,[whpr(X^Y),be,pp1(X)]).
 rule(Z,[whpr((X^Y)^Z), inv_s(Y,[X])]).
-rule(inv_s(Y,[WH]),[aux, np(X^Y),vp(X,[WH])]).
+rule(inv_s(Y,[WH]),[be, np(X^Y),vp(X,[WH])]).
 
+rule(np(X),[there,np(X)]).
 
 %% rule(iv(X,[WH]),[tv(X^WH,[])]).
 
 rule(rc(Y,[X]),[rel,s(Y,[X])]).
 rule(rc(Y,[]),[rel,vp(Y,[])]).
 
+
 rule(n(X^and(Y,Z)),[n(X^Y),rc(X^Z,[])]).
 rule(n(X^and(Y,Z)),[n(X^Y),rc(Z,[X])]).
 
+rule(ynq(Y),[be, np(X^Y),np(X)]).
+rule(ynq(X^A),[be, np(X^T),np(T^A)]).
 
-%%%%%%%%%% ------------ End of Shubham's Rules
-% ...
+rule(ynq(X^Y),[be, np(X^A),ap(A^Y)]).
+
+%%%% ------------------- End of Rules
+
 
 
 % ===========================================================
