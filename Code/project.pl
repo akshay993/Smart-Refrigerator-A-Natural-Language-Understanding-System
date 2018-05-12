@@ -392,8 +392,8 @@ rule(ynq(Y),[be,np(Y)]).
 model([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,
 a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1],
 [
-[bowl,[a,b]],
 [yellow,[b]],
+[bowl,[a,b]],
 [egg,[c,d]],
 [milk,[l,v,w]],
 [shelf,[h,i,m]],
@@ -472,7 +472,7 @@ i(C,_,Value):-
 
 f(Symbol,Value):-
    model(_,F), member([Symbol,ListOfValues],F),
-    member(Value,ListOfValues).
+    member(Value,ListOfValues),!.
 
 
 f(Symbol,Value):-
@@ -501,6 +501,10 @@ sat(G1,exists(X,Formula),G3):-
 sat(G1,two(X,and(A,B)),G3):-
    extend(G1,X,G2),
    sat(G2,and(A,B),G3).
+   
+sat(G1,three(X,and(A,B)),G3):-
+   extend(G1,X,G2),
+   sat(G2,and(A,B),G3),write("Reach").
 %% findall((G3), sat(G2,and(A,B),G3),L1),write(L1),nl,length(L1,N),write(N),nl,N>=2.
 
 sat(G1,thing(X),G3):-
