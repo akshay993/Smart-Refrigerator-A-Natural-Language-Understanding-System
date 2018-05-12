@@ -154,6 +154,8 @@ lemma(mango,n).
 lemma(chicken,n).
 lemma(sausage,n).
 lemma(steak,n).
+lemma(fruit,n).
+lemma(vegetable,n).
 
 %% Proper Nouns
 lemma(tom,pn).
@@ -417,13 +419,25 @@ a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1],
 [almond,[v]],
 [skim,[w]],
 [sandwich,[x,y,z]],
-[meat,[a1,b1]],
+%[meat,[a1,b1]],
 [sam,[c1]],
 [sue,[d1]],
 [popsicle,[e1]],
 [freezer,[g1]],
 [drink,[[c1,v]]],
-[drank,[[c1,w]]]
+[drank,[[c1,w]]],
+
+[chicken,[h1]],
+[sausage,[i1]],
+[steak,[j1]],
+[tomato,[k1]],
+[onion,[l1]],
+[carrot,[m1]],
+[spinach,[n1]],
+[orange,[o1,p1]],
+[apple,[q1,r1]],
+[mango,[s1,t1]]
+
 %[drink,[[c1,v]]],
 %[drank,[[c1,w]]]
 ]).
