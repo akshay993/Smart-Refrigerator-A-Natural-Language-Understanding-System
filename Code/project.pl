@@ -200,7 +200,7 @@ lemma(in,p).
 lemma(inside,p).
 lemma(under,p).
 lemma(with,p).
-%lemma(on,p).
+lemma(on,p).
 lemma(on,vacp).
 lemma(to,vacp).
 lemma(of,p).
