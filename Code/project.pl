@@ -156,6 +156,8 @@ lemma(sausage,n).
 lemma(steak,n).
 lemma(fruit,n).
 lemma(vegetable,n).
+lemma(icecream,n).
+lemma(freezer,n).
 
 %% Proper Nouns
 lemma(tom,pn).
@@ -201,6 +203,7 @@ lemma(with,p).
 lemma(on,p).
 lemma(to,p).
 lemma(of,p).
+lemma(from,p).
 
 %% Relative Clauses
 lemma(that,rel).
@@ -412,10 +415,10 @@ a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1],
 [ham,[p,q,r]],
 
 [on,[[e,m],[f,i],[b,i],[o,h]]],
-[of,[[b,c],[b,d],[f,j],[n,p],[n,q],[n,r],[u,s],[u,t],[o,a1],[o,e1]]],
-[inside,[[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u],[a1,o],[e1,o]]],
-[in,[[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u],[a1,o],[e1,o]]],
-[contain,[[b,c],[b,d],[f,j],[n,p],[n,q],[n,r],[u,s],[u,t],[o,a1],[o,e1]]],
+[inside,[ [w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u],[a1,o],[e1,o]]],
+[in,[ [w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u],[a1,o],[e1,o]]],
+[contain,[ [u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[n,r],[u,s],[u,t],[o,a1],[o,e1]]],
+[of,[ [u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[n,r],[u,s],[u,t],[o,a1],[o,e1]]],
 
 [watermelon,[s,t]],
 [fridge,[u]],
@@ -437,7 +440,10 @@ a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1],
 [spinach,[n1]],
 [orange,[o1,p1]],
 [apple,[q1,r1]],
-[mango,[s1,t1]]
+[mango,[s1,t1]],
+[eat,[[d1,h1]]],
+[ate,[[d1,h1]]],
+[icecream,[u1]]
 ]).
 
 modelchecker([s(B,[])],Result):- sat([],B,_),valid(Result).
@@ -502,7 +508,7 @@ sat(G1,exists(X,Formula),G3):-
    sat(G2,Formula,G3).
 
 sat(G1,one(X,Formula),G3):-
-   findall((G3),sat(G1,exists(X,Formula),G3),L1),length(L1,N),N>=1,nl.   
+   findall((G3),sat(G1,exists(X,Formula),G3),L1),length(L1,N),N>=1,nl.
 sat(G1,two(X,Formula),G3):-
    findall((G3),sat(G1,exists(X,Formula),G3),L1),length(L1,N),N>=2,nl.
 sat(G1,three(X,Formula),G3):-
