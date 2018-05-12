@@ -67,11 +67,6 @@ srparse([Z,Y,X|MoreStack],Words,M):-
       rule(LHS,[X,Y,Z]),
       srparse([LHS|MoreStack],Words,M).
 
-srparse([Z,Y,X|MoreStack],Words,M):-
-      rule(LHS,[X,Y]),
-      srparse([Z,LHS|MoreStack],Words,M).
-
-
 srparse([Y,X|MoreStack],Words,M):-
        rule(LHS,[X,Y]),
        srparse([LHS|MoreStack],Words,M).
@@ -79,7 +74,6 @@ srparse([Y,X|MoreStack],Words,M):-
 srparse([X|MoreStack],Words,M):-
        rule(LHS,[X]),
        srparse([LHS|MoreStack],Words,M).
-
 
 
 srparse(Stack,[Word|Words],M):-
@@ -250,8 +244,8 @@ lex(p2(K^W^P),Word):-lemma(Word,p), P=.. [Word,K,W].
 lex(p1((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y].
 
 %WHPR
-lex(whpr((X^P)^q(X,and(P,person))),who):- lemma(who,whpr).
-lex(whpr((X^P)^q(X,and(P,thing))),what):- lemma(what,whpr).
+lex(whpr((X^P)^q(X,and(person(X),P))),who):- lemma(who,whpr).
+lex(whpr((X^P)^q(X,and(thing(X),P))),what):- lemma(what,whpr).
 
 %Numerals
 lex(dt((X^P)^(X^Q)^two(X,and(P,Q))),two):- lemma(two,two).
@@ -327,15 +321,19 @@ rule(ynq(Y),[be, np(X^Y),vp(X,[])]).
 rule(s(B,[]),[np(A^B),vp(A,[])]).
 rule(vp(X,WH),[iv(X,WH)]).
 rule(s(X,WH),[vp(X,WH)]).
+
 rule(ynq(Y),[be, np(X^Y),pp2(X)]).
 rule(Y,[whpr(X^Y),vp(X,[])]).
 rule(Y,[whpr(X^Y),be,pp2(X)]).
+
 rule(rc(Y,[X]),[rel,s(Y,[X])]).
 rule(rc(Y,[]),[rel,vp(Y,[])]).
 rule(n(X^and(Y,Z)),[n(X^Y),rc(X^Z,[])]).
 rule(n(X^and(Y,Z)),[n(X^Y),rc(Z,[X])]).
+
 rule(iv(X^A,[Y]),[tv(X^Y^A,[])]).
 rule(tv(Y^A,[X]),[tv(X^Y^A,[])]).
+
 rule(Z,[whpr((X^Y)^Z), inv_s(Y,[X])]).
 rule(inv_s(Y,[WH]),[be, np(X^Y),vp(X,[WH])]).
 rule(np(X),[there,np(X)]).
@@ -355,9 +353,129 @@ rule(ynq(X^A),[be, np(X^T),np(T^A)]).
 %  3. If input is a content question, find answer
 % ===========================================================
 
-%model([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z],
-%           [[bowl,[a,b]],[yellow,[b]],[egg,[c,d]],[milk[l]],[shelf[h,i,m]],[bottom[i]],[container[e,f,g]],
-%			[white[e,f]],[banana[j,k]],[expire,[l]],[on[[e,i],[f,i]]],[contain,[[a,c],[b,d],[e,j]]]]).
+model([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z],[[bowl,[a,b]],[yellow,[b]],[egg,[c,d]],[milk,[l]],[bottom,[i]],[container,[e,f,g]],
+			[white,[e,f]],[banana,[j,k]],[expire,[l]],[on,[[e,i],[f,i]]],[contain,[[a,c],[b,d],[e,j]]],[shelf,[h,i,m]]]).
+
+modelchecker([s(B,[])],Result):- write(B),nl,sat([],B,G),write("reach"),write(G),nl,Result is 1.
+			
+% ==================================================
+% Function i
+% Determines the value of a variable/constant in an assignment G
+% ==================================================
+
+i(Var,G,Value):- 
+    var(Var),
+    member([Var2,Value],G), 
+    Var == Var2.   
+
+i(C,_,Value):- 
+   nonvar(C),
+   f(C,Value).
+
+
+% ==================================================
+% Function F
+% Determines if a value is in the denotation of a Predicate/Relation
+% ==================================================
+
+f(Symbol,Value):- 
+   model(_,F),
+    member([Symbol,ListOfValues],F), 
+    member(Value,ListOfValues).  
+
+
+% ==================================================
+% Extension of a variable assignment
+% ==================================================
+
+extend(G,X,[ [X,Val] | G]):-
+   model(D,_),
+   member(Val,D).
+
+
+% ==================================================
+% Existential quantifier
+% ==================================================
+
+sat(G1,exists(X,Formula),G3):-
+   extend(G1,X,G2),
+   sat(G2,Formula,G3).
+
+
+% ==================================================
+% Definite quantifier (semantic rather than pragmatic account)
+% ==================================================
+
+ sat(G1,the(X,and(A,B)),G3):-
+   sat(G1,exists(X,and(A,B)),G3),
+   i(X,G3,Value), 
+   \+ ( ( sat(G1,exists(X,A),G2), i(X,G2,Value2), \+(Value = Value2)) ).
+
+
+
+
+% ==================================================
+% Negation 
+% ==================================================
+
+sat(G,not(Formula2),G):-
+   \+ sat(G,Formula2,_).
+
+% ==================================================
+% Universal quantifier
+% ==================================================
+
+sat(G, forall(X,Formula2),G):-
+  sat(G,not( exists(X,not(Formula2) ) ),G).
+
+
+% ==================================================
+% Conjunction
+% ==================================================
+
+sat(G1,and(Formula1,Formula2),G3):-
+  sat(G1,Formula1,G2), 
+  sat(G2,Formula2,G3). 
+
+
+% ==================================================
+% Disjunction
+% ==================================================
+
+
+sat(G1,or(Formula1,Formula2),G2):-
+  ( sat(G1,Formula1,G2) ;
+    sat(G1,Formula2,G2) ).
+
+
+% ==================================================
+% Implication
+% ==================================================
+
+sat(G1,imp(Formula1,Formula2),G2):-
+   sat(G1,or(not(Formula1),Formula2),G2).
+
+
+% ==================================================
+% Predicates
+% ==================================================
+
+sat(G,Predicate,G):-
+   Predicate =.. [P,Var],
+   \+ (P = not),
+   i(Var,G,Value),
+   f(P,Value).
+
+% ==================================================
+% Two-place Relations
+% ==================================================
+
+sat(G,Rel,G):-
+   Rel =.. [R,Var1,Var2],
+   \+ ( member(R,[exists,forall,and,or,imp,the]) ),
+   i(Var1,G,Value1),
+   i(Var2,G,Value2),
+   f(R,[Value1,Value2]).
 
 % ===========================================================
 %  Respond
