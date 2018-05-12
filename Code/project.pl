@@ -200,7 +200,7 @@ lemma(in,p).
 lemma(inside,p).
 lemma(under,p).
 lemma(with,p).
-lemma(on,p).
+%lemma(on,p).
 lemma(on,vacp).
 lemma(to,vacp).
 lemma(of,p).
@@ -623,31 +623,31 @@ sat(G,Rel,G):-
 
 % Declarative true in the model
 respond(Evaluation) :-
-		Evaluation = [true_in_the_model],
+		Evaluation = [true_in_the_model],nl,
 		write('That is correct'),!.
 
 % Declarative false in the model
 respond(Evaluation) :-
-		Evaluation = [not_true_in_the_model],
+		Evaluation = [not_true_in_the_model],nl,
 		write('That is not correct'),!.
 
 % Yes-No interrogative true in the model
 respond(Evaluation) :-
-		Evaluation = [yes_to_question],
+		Evaluation = [yes_to_question],nl,
 		write('yes').
 
 % Yes-No interrogative false in the model
 respond(Evaluation) :-
-		Evaluation = [no_to_question],
+		Evaluation = [no_to_question],nl,
 		write('no').
 
 % wh-interrogative true in the model
 % ...
 respond(Evaluation) :-
-		Evaluation \= [], write(Evaluation).
+		Evaluation \= [],nl, write(Evaluation).
 
 % wh-interrogative false in the model
 % ...
 
 respond(Evaluation) :-
-		Evaluation = [], write('Dafuq do I know').
+		Evaluation = [],nl, write('My knowledge is limited by the programming abilities of my creator.').
