@@ -143,7 +143,6 @@ lemma(almond,n).
 lemma(milk,n).
 lemma(popsicle,n).
 lemma(can,n).
-lemma(skim,n).
 lemma(box,n).
 
 %% Proper Nouns
@@ -161,6 +160,8 @@ lemma(middle,adj).
 lemma(bottom,adj).
 lemma(red,adj).
 lemma(empty,adj).
+lemma(skim,adj).
+lemma(almond,adj).
 
 
 %% Verbs
@@ -343,9 +344,6 @@ rule(Z,[whpr((X^Y)^Z), inv_s(Y,[X])]).
 rule(inv_s(Y,[WH]),[be, np(X^Y),vp(X,[WH])]).
 rule(np(X),[there,np(X)]).
 
-%notworking
-% rule(ynq(X),[be, np(X)]).
-% rule(ynq(X^A),[be, np(X^T),np(T^A)]).
 
 %%%% ------------------- End of Rules
 
@@ -358,18 +356,45 @@ rule(np(X),[there,np(X)]).
 %  3. If input is a content question, find answer
 % ===========================================================
 
-model([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z],[[bowl,[a,b]],[yellow,[b]],[egg,[c,d]],[milk,[l]],[bottom,[i]],[container,[e,f,g]],
-			[white,[e,f]],[banana,[j,k]],[expire,[l]],[on,[[e,i],[f,i]]],[contain,[[a,c],[b,d],[e,j],[n,p]]],[shelf,[h,i,m]],[box,[n,o]],[green,[n]],
-			[ham,[p]],[inside,[[c,a],[d,b],[j,e],[p,n]]]]).
+model([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z],[
+[bowl,[a,b]],
+[yellow,[b]],
+[egg,[c,d]],
+[milk,[l,v,w]],
+[shelf,[h,i,m]],
+[middle,[i]],
+[top,[h]],
+[bottom,[m]],
+[container,[e,f,g]],
+[white,[e,f]],
+[banana,[j,k]],
+[expire,[l]],
+[on,[[e,m],[f,i],[b,i]]],
+[contain,[[b,c],[b,d],[f,j],[n,p],[n,q],[n,r],[u,s],[u,t]]],
+[box,[n,o]],
+[green,[n]],
+[ham,[p,q,r]],
+[inside,[[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u]]],
+[in,[[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u]]],
+[watermelon,[s,t]],
+[fridge,[u]],
+[almond,[v]],
+[skim,[w]]
+%% [drink,[[sam,v]]],
+%% [drank,[[sam,w]]],
+%% [drink,[[sam,v]]],
+%% [drank,[[sam,w]]]
+]).
 
 modelchecker([s(B,[])],Result):- sat([],B,_),valid(Result).
 modelchecker([s(B,[])],Result):- \+ sat([],B,_),invalid(Result).
-modelchecker([ynq(B)],Result):- sat([],B,_),yq(Result).
+modelchecker([ynq(B)],Result):- sat([],B,G),write(G),nl,yq(Result).
 modelchecker([ynq(B)],Result):- \+ sat([],B,_),nq(Result).
+modelchecker([q(_,B)],Result):- findall((X),(sat([],B,[_|[[_|[G3]]]]),f(X,G3)),Result).
 
+modelchecker([q(_,B)],Result):- \+ sat([],B,_),dne(Result).
 
-% modelchecker([q(M)],Result):- write(M),nl,sat([],M,G),write(G),nl,Result is 1.
-		
+dne([]).		
 valid([true_in_the_model]). 
 invalid([not_true_in_the_model]).
 yq([yes_to_question]).
@@ -417,7 +442,17 @@ extend(G,X,[ [X,Val] | G]):-
 sat(G1,exists(X,Formula),G3):-
    extend(G1,X,G2),
    sat(G2,Formula,G3).
+   
+sat(G1,two(X,and(A,B)),G3):-
+   extend(G1,X,G2),
+   sat(G2,and(A,B),G3).
+%% findall((G3), sat(G2,and(A,B),G3),L1),write(L1),nl,length(L1,N),write(N),nl,N>=2.
 
+sat(G1,thing(X),G3):-
+   extend(G1,X,G3).
+   
+sat(G1,person(X),G3):-
+   extend(G1,X,G3).
 
 % ==================================================
 % Definite quantifier (semantic rather than pragmatic account)
@@ -427,8 +462,6 @@ sat(G1,exists(X,Formula),G3):-
    sat(G1,exists(X,and(A,B)),G3),
    i(X,G3,Value), 
    \+ ( ( sat(G1,exists(X,A),G2), i(X,G2,Value2), \+(Value = Value2)) ).
-
-
 
 
 % ==================================================
@@ -521,6 +554,11 @@ respond(Evaluation) :-
 
 % wh-interrogative true in the model
 % ...
+respond(Evaluation) :-
+		Evaluation \= [], write(Evaluation).
 
 % wh-interrogative false in the model
 % ...
+
+respond(Evaluation) :- 
+		Evaluation = [], write('Dafuq do I know').
