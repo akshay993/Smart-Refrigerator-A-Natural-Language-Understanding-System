@@ -149,6 +149,7 @@ lemma(box,n).
 lemma(tom,pn).
 lemma(mia,pn).
 lemma(sam,pn).
+lemma(sue,pn).
 
 %% Adjectives
 lemma(blue,adj).
@@ -264,9 +265,6 @@ lex(dt((X^P)^(X^Q)^eight(X,and(P,Q))),eight):- lemma(eight,eight).
 lex(dt((X^P)^(X^Q)^nine(X,and(P,Q))),nine):- lemma(nine,nine).
 lex(dt((X^P)^(X^Q)^ten(X,and(P,Q))),ten):- lemma(ten,ten).
 
-%VACP
-lex(p1((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,vacp), Z=.. [Word,X,Y].
-
 %Auxilary_Verb
 lex(be,Word) :- lemma(Word,be).
 lex(rel,Word):- lemma(Word,rel).
@@ -344,6 +342,11 @@ rule(Z,[whpr((X^Y)^Z), inv_s(Y,[X])]).
 rule(inv_s(Y,[WH]),[be, np(X^Y),vp(X,[WH])]).
 rule(np(X),[there,np(X)]).
 
+%% To be fixed
+
+rule(ynq(Y),[be,np(Y)]). 
+
+
 
 %%%% ------------------- End of Rules
 
@@ -356,7 +359,9 @@ rule(np(X),[there,np(X)]).
 %  3. If input is a content question, find answer
 % ===========================================================
 
-model([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z],[
+model([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,
+a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1],
+[
 [bowl,[a,b]],
 [yellow,[b]],
 [egg,[c,d]],
@@ -370,28 +375,36 @@ model([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z],[
 [banana,[j,k]],
 [expire,[l]],
 [on,[[e,m],[f,i],[b,i]]],
-[contain,[[b,c],[b,d],[f,j],[n,p],[n,q],[n,r],[u,s],[u,t]]],
-[box,[n,o]],
+[of,[o,e1]],
+[empty,[o]],
+[box,[n,o,f1]],
 [green,[n]],
+[blue,[f1]],
 [ham,[p,q,r]],
-[inside,[[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u]]],
-[in,[[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u]]],
+[inside,[[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u],[a1,x]]],
+[in,[[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u],[a1,x]]],
+[contain,[[b,c],[b,d],[f,j],[n,p],[n,q],[n,r],[u,s],[u,t],[x,a1]]],
 [watermelon,[s,t]],
 [fridge,[u]],
 [almond,[v]],
-[skim,[w]]
-%% [drink,[[sam,v]]],
-%% [drank,[[sam,w]]],
-%% [drink,[[sam,v]]],
-%% [drank,[[sam,w]]]
+[skim,[w]],
+[sandwich,[x,y,z]],
+[meat,[a1,b1]],
+[sam,[c1]],
+[sue,[d1]],
+[popsicle,[e1]],
+[freezer,[g1]],
+[drink,[[c1,v]]],
+[drank,[[c1,w]]],
+[drink,[[c1,v]]],
+[drank,[[c1,w]]]
 ]).
 
 modelchecker([s(B,[])],Result):- sat([],B,_),valid(Result).
 modelchecker([s(B,[])],Result):- \+ sat([],B,_),invalid(Result).
-modelchecker([ynq(B)],Result):- sat([],B,G),write(G),nl,yq(Result).
+modelchecker([ynq(B)],Result):- sat([],B,_),yq(Result).
 modelchecker([ynq(B)],Result):- \+ sat([],B,_),nq(Result).
 modelchecker([q(_,B)],Result):- findall((X),(sat([],B,[_|[[_|[G3]]]]),f(X,G3)),Result).
-
 modelchecker([q(_,B)],Result):- \+ sat([],B,_),dne(Result).
 
 dne([]).		
