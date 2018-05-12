@@ -252,6 +252,7 @@ lex(whpr((X^P)^q(X,and(person(X),P))),who):- lemma(who,whpr).
 lex(whpr((X^P)^q(X,and(thing(X),P))),what):- lemma(what,whpr).
 
 %Numerals
+lex(dt((X^P)^(X^Q)^one(X,and(P,Q))),one):- lemma(one,one).
 lex(dt((X^P)^(X^Q)^two(X,and(P,Q))),two):- lemma(two,two).
 lex(dt((X^P)^(X^Q)^three(X,and(P,Q))),three):- lemma(three,three).
 lex(dt((X^P)^(X^Q)^four(X,and(P,Q))),four):- lemma(four,four).
@@ -361,12 +362,19 @@ model([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z],[[bowl,[a,b]],[yello
 			[white,[e,f]],[banana,[j,k]],[expire,[l]],[on,[[e,i],[f,i]]],[contain,[[a,c],[b,d],[e,j],[n,p]]],[shelf,[h,i,m]],[box,[n,o]],[green,[n]],
 			[ham,[p]],[inside,[[c,a],[d,b],[j,e],[p,n]]]]).
 
-modelchecker([s(B,[])],Result):- write(B),nl,sat([],B,G),write(G),nl,Result is 1.
-modelchecker([ynq(B)],Result):- write(B),nl,sat([],B,G),write(G),nl,Result is 1.
+modelchecker([s(B,[])],Result):- sat([],B,_),valid(Result).
+modelchecker([s(B,[])],Result):- \+ sat([],B,_),invalid(Result).
+modelchecker([ynq(B)],Result):- sat([],B,_),yq(Result).
+modelchecker([ynq(B)],Result):- \+ sat([],B,_),nq(Result).
+
 
 % modelchecker([q(M)],Result):- write(M),nl,sat([],M,G),write(G),nl,Result is 1.
 		
-		
+valid([true_in_the_model]). 
+invalid([not_true_in_the_model]).
+yq([yes_to_question]).
+nq([no_to_question]).
+
 % ==================================================
 % Function i
 % Determines the value of a variable/constant in an assignment G
