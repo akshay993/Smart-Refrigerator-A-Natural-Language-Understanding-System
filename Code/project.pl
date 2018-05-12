@@ -200,8 +200,8 @@ lemma(in,p).
 lemma(inside,p).
 lemma(under,p).
 lemma(with,p).
-lemma(on,p).
-lemma(to,p).
+lemma(on,vacp).
+lemma(to,vacp).
 lemma(of,p).
 lemma(from,p).
 
@@ -302,7 +302,7 @@ lex(dt((X^P)^(X^Q)^ten(X,and(P,Q))),ten):- lemma(ten,ten).
 %Auxilary_Verb
 lex(be,Word) :- lemma(Word,be).
 lex(rel,Word):- lemma(Word,rel).
-
+lex(vacp,Word):- lemma(Word,vacp).
 lex(there,there).
 
 
@@ -321,7 +321,6 @@ lex(be,Y):-lemma(Word,be),atom_concat(Temp,e,Word),sub_atom(Y,_,_,_,Temp),atom_c
 
 lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,s,Y), P =.. [Word,X].
 lex(n(X^P),Y):- lemma(Word,n),atom_concat(Word,es,Y), P =.. [Word,X].
-
 
 %%%%%%%%%% ------------ End Lexicons with inflections
 
@@ -352,15 +351,20 @@ rule(np(Y),[dt(X^Y),n(X)]).
 rule(np(X),[pn(X)]).
 rule(n(A^C),[n(A^B),pp1((A^B)^C)]).
 rule(n(A),[adj(B^A),n(B)]).
+
+rule(pp1(C),[vacp,np(C)]).
+
 rule(pp1(C),[p1(A^B^C),np(A^B)]).
 rule(pp2(A^B),[p2(A^C),np(C^B)]).
 rule(vp(A^B,[]),[tv(A^C,[]),np(C^B)]).
+rule(vp(A^B,[]),[tv(A^C,[]),pp1(C^B)]).
 rule(ynq(Y),[be, np(X^Y),vp(X,[])]).
-rule(s(B,[]),[np(A^B),vp(A,[])]).
+rule(s(B,WH),[np(A^B),vp(A,WH)]).
 rule(vp(X,WH),[iv(X,WH)]).
 rule(s(X,WH),[vp(X,WH)]).
 
 rule(ynq(Y),[be, np(X^Y),pp2(X)]).
+
 rule(Y,[whpr(X^Y),vp(X,[])]).
 rule(Y,[whpr(X^Y),be,pp2(X)]).
 
@@ -375,6 +379,8 @@ rule(tv(Y^A,[X]),[tv(X^Y^A,[])]).
 rule(Z,[whpr((X^Y)^Z), inv_s(Y,[X])]).
 rule(inv_s(Y,[WH]),[be, np(X^Y),vp(X,[WH])]).
 rule(np(X),[there,np(X)]).
+
+rule(s(B,[]),[there,ynq(B)]).
 
 %% To be fixed
 
@@ -426,6 +432,7 @@ a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1],
 
 [on,[[e,m],[f,i],[b,i],[o,h]]],
 [inside,[ [w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u],[a1,o],[e1,o]]],
+[belong,[ [w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u],[a1,o],[e1,o]]],
 [in,[ [w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u],[a1,o],[e1,o]]],
 [contain,[ [u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[n,r],[u,s],[u,t],[o,a1],[o,e1]]],
 [of,[ [u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[n,r],[u,s],[u,t],[o,a1],[o,e1]]],
