@@ -173,6 +173,8 @@ lemma(had,tv).
 lemma(has,tv).
 lemma(eat,tv).
 lemma(ate,tv).
+lemma(took,tv).
+lemma(take,tv).
 lemma(put,dtv).
 
 %% Prepositions
@@ -354,9 +356,13 @@ rule(ynq(X^A),[be, np(X^T),np(T^A)]).
 % ===========================================================
 
 model([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z],[[bowl,[a,b]],[yellow,[b]],[egg,[c,d]],[milk,[l]],[bottom,[i]],[container,[e,f,g]],
-			[white,[e,f]],[banana,[j,k]],[expire,[l]],[on,[[e,i],[f,i]]],[contain,[[a,c],[b,d],[e,j]]],[shelf,[h,i,m]]]).
+			[white,[e,f]],[banana,[j,k]],[expire,[l]],[on,[[e,i],[f,i]]],[contain,[[a,c],[b,d],[e,j],[n,p]]],[shelf,[h,i,m]],[box,[n,o]],[green,[n]],
+			[ham,[p]]]).
 
-modelchecker([s(B,[])],Result):- write(B),nl,sat([],B,G),write("reach"),write(G),nl,Result is 1.
+modelchecker([s(B,[])],Result):- nl,sat([],B,G),write(G),Result is 1.
+
+modelchecker([q(B,[])],Result):- write(B),nl,sat([],B,G),Result is G.
+modelchecker([ynq(B)],Result):- write(B),nl,sat([],B,G),write("reach"),write(G),nl,Result is 1.
 			
 % ==================================================
 % Function i
