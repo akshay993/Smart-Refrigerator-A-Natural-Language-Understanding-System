@@ -144,6 +144,16 @@ lemma(milk,n).
 lemma(popsicle,n).
 lemma(can,n).
 lemma(box,n).
+lemma(tomato,n).
+lemma(onion,n).
+lemma(carrot,n).
+lemma(spinach,n).
+lemma(orange,n).
+lemma(apple,n).
+lemma(mango,n).
+lemma(chicken,n).
+lemma(sausage,n).
+lemma(steak,n).
 
 %% Proper Nouns
 lemma(tom,pn).
@@ -209,6 +219,24 @@ lemma(who,whpr).
 lemma(what,whpr).
 
 %%%%%%%%%% ------------ End Lemmas
+
+
+%% Hypernyms
+
+isa(chicken,meat).
+isa(ham,meat).
+isa(sausage,meat).
+isa(steak,meat).
+isa(watermelon,fruit).
+isa(banana,fruit).
+isa(apple,fruit).
+isa(mango,fruit).
+isa(orange,fruit).
+isa(tomato,vegetable).
+isa(onion,vegetable).
+isa(carrot,vegetable).
+isa(spinach,vegetable).
+
 
 
 % --------------------------------------------------------------------
@@ -344,7 +372,7 @@ rule(np(X),[there,np(X)]).
 
 %% To be fixed
 
-rule(ynq(Y),[be,np(Y)]). 
+rule(ynq(Y),[be,np(Y)]).
 
 
 
@@ -395,9 +423,9 @@ a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1],
 [popsicle,[e1]],
 [freezer,[g1]],
 [drink,[[c1,v]]],
-[drank,[[c1,w]]],
-[drink,[[c1,v]]],
 [drank,[[c1,w]]]
+%[drink,[[c1,v]]],
+%[drank,[[c1,w]]]
 ]).
 
 modelchecker([s(B,[])],Result):- sat([],B,_),valid(Result).
@@ -407,8 +435,8 @@ modelchecker([ynq(B)],Result):- \+ sat([],B,_),nq(Result).
 modelchecker([q(_,B)],Result):- findall((X),(sat([],B,[_|[[_|[G3]]]]),f(X,G3)),Result).
 modelchecker([q(_,B)],Result):- \+ sat([],B,_),dne(Result).
 
-dne([]).		
-valid([true_in_the_model]). 
+dne([]).
+valid([true_in_the_model]).
 invalid([not_true_in_the_model]).
 yq([yes_to_question]).
 nq([no_to_question]).
@@ -418,12 +446,12 @@ nq([no_to_question]).
 % Determines the value of a variable/constant in an assignment G
 % ==================================================
 
-i(Var,G,Value):- 
+i(Var,G,Value):-
     var(Var),
-    member([Var2,Value],G), 
-    Var == Var2.   
+    member([Var2,Value],G),
+    Var == Var2.
 
-i(C,_,Value):- 
+i(C,_,Value):-
    nonvar(C),
    f(C,Value).
 
@@ -433,10 +461,10 @@ i(C,_,Value):-
 % Determines if a value is in the denotation of a Predicate/Relation
 % ==================================================
 
-f(Symbol,Value):- 
+f(Symbol,Value):-
    model(_,F),
-    member([Symbol,ListOfValues],F), 
-    member(Value,ListOfValues).  
+    member([Symbol,ListOfValues],F),
+    member(Value,ListOfValues).
 
 
 % ==================================================
@@ -455,7 +483,7 @@ extend(G,X,[ [X,Val] | G]):-
 sat(G1,exists(X,Formula),G3):-
    extend(G1,X,G2),
    sat(G2,Formula,G3).
-   
+
 sat(G1,two(X,and(A,B)),G3):-
    extend(G1,X,G2),
    sat(G2,and(A,B),G3).
@@ -463,7 +491,7 @@ sat(G1,two(X,and(A,B)),G3):-
 
 sat(G1,thing(X),G3):-
    extend(G1,X,G3).
-   
+
 sat(G1,person(X),G3):-
    extend(G1,X,G3).
 
@@ -473,12 +501,12 @@ sat(G1,person(X),G3):-
 
  sat(G1,the(X,and(A,B)),G3):-
    sat(G1,exists(X,and(A,B)),G3),
-   i(X,G3,Value), 
+   i(X,G3,Value),
    \+ ( ( sat(G1,exists(X,A),G2), i(X,G2,Value2), \+(Value = Value2)) ).
 
 
 % ==================================================
-% Negation 
+% Negation
 % ==================================================
 
 sat(G,not(Formula2),G):-
@@ -497,8 +525,8 @@ sat(G, forall(X,Formula2),G):-
 % ==================================================
 
 sat(G1,and(Formula1,Formula2),G3):-
-  sat(G1,Formula1,G2), 
-  sat(G2,Formula2,G3). 
+  sat(G1,Formula1,G2),
+  sat(G2,Formula2,G3).
 
 
 % ==================================================
@@ -573,5 +601,5 @@ respond(Evaluation) :-
 % wh-interrogative false in the model
 % ...
 
-respond(Evaluation) :- 
+respond(Evaluation) :-
 		Evaluation = [], write('Dafuq do I know').
