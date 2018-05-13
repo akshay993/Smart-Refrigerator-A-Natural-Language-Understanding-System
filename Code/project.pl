@@ -200,8 +200,8 @@ lemma(in,p).
 lemma(inside,p).
 lemma(under,p).
 lemma(with,p).
-%lemma(on,p).
-lemma(on,vacp).
+%lemma(on,vacp).
+lemma(on,p).
 lemma(to,vacp).
 lemma(of,p).
 lemma(from,p).
@@ -224,6 +224,7 @@ lemma(do,be).
 %% WHPR
 lemma(who,whpr).
 lemma(what,whpr).
+
 
 %%%%%%%%%% ------------ End Lemmas
 
@@ -275,6 +276,9 @@ lex(iv(X^P,[]),Word):-lemma(Word,iv), P=.. [Word,X].
 
 %Transitive_Verb
 lex(tv(K^W^P,[]),Word):-lemma(Word,tv), P=.. [Word,K,W].
+
+%Ditransitive_Verb
+lex(dtv(K^W^P^R,[]),Word):-lemma(Word,dtv), R=.. [Word,K,W,P].
 
 %Adjective
 lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X].
@@ -381,10 +385,14 @@ rule(Z,[whpr((X^Y)^Z), inv_s(Y,[X])]).
 rule(inv_s(Y,[WH]),[be, np(X^Y),vp(X,[WH])]).
 rule(np(X),[there,np(X)]).
 
-rule(s(B,[]),[there,ynq(B)]).
 
-rule(ynq(Y),[be,np(Y)]).
+rule(vp(K^Z,[]),[dtv(K^W^P^R,[]),np((W^Q)^Z),pp1((P^R)^Q)]).
+rule(vp(K^Z,[]),[dtv(K^W^P^R,[]),np((P^Q)^Z),np((W^R)^Q)]).
 
+%rule(s(B,[]),[there,ynq(B)]).
+%rule(s(X,Q,[]),[there,be,np((X^P)^exists(X,and(Q,P)))]).
+
+rule(ynq(exists(X,Y)),[be,there,n(X^Y)]).
 
 
 %%%% ------------------- End of Rules
@@ -406,13 +414,13 @@ a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1],
 [egg,[c,d]],
 [milk,[l,v,w]],
 [shelf,[h,i,m]],
-[container,[e,f,g]],
+[container,[e,f,g,x1]],
 [banana,[j,k]],
 [ham,[p,q,r]],
 [watermelon,[s,t]],
 [fridge,[u]],
 [almond,[v]],
-[sandwich,[x,y,z]],
+[sandwich,[x,y,z,y1,z1]],
 [sam,[c1]],
 [sue,[d1]],
 [popsicle,[e1]],
@@ -429,14 +437,17 @@ a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1],
 [mango,[s1,t1]],
 [icecream,[u1]],
 
-[on,[[e,m],[f,i],[b,i],[o,h]]],
-[inside,[ [w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1]]],
-[belong,[ [w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1]]],
-[in,[ [w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,n],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1]]],
-[contain,[ [u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[n,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1]]],
-[of,[ [u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[n,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1]]],
 
+[on,[[f,m],[f,i],[g,h],[x1,h],[b,i],[o,h],[f1,h],[w1,h]]],
+[inside,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
+[belong,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
+[in,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
 
+[contain,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
+[has,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
+[of,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
+
+[put,[[c1,f1,h],[c1,w1,h]]],
 [drink,[[c1,v],[c1,w]]],
 [drank,[[c1,v],[c1,w]]],
 [skim,[w]],
@@ -447,11 +458,13 @@ a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1],
 [expire,[l]],
 [empty,[o,v1]],
 [green,[n,o]],
-[blue,[f1]],
+[blue,[f1,g,x1]],
 [middle,[i]],
 [top,[h]],
 [bottom,[m]]
 ]).
+
+
 
 modelchecker([s(B,[])],Result):- sat([],B,_),valid(Result).
 modelchecker([s(B,[])],Result):- \+ sat([],B,_),invalid(Result).
