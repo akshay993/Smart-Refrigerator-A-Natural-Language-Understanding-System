@@ -200,7 +200,7 @@ lemma(in,p).
 lemma(inside,p).
 lemma(under,p).
 lemma(with,p).
-%lemma(on,vacp).
+lemma(on,vacp).
 lemma(on,p).
 lemma(to,vacp).
 lemma(of,p).
@@ -224,7 +224,6 @@ lemma(do,be).
 %% WHPR
 lemma(who,whpr).
 lemma(what,whpr).
-
 
 %%%%%%%%%% ------------ End Lemmas
 
@@ -289,8 +288,8 @@ lex(p2(K^W^P),Word):-lemma(Word,p), P=.. [Word,K,W].
 lex(p1((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y].
 
 %WHPR
-lex(whpr((X^P)^q(X,and(person(X),P))),who):- lemma(who,whpr).
-lex(whpr((X^P)^q(X,and(thing(X),P))),what):- lemma(what,whpr).
+lex(whpr((X^Z)^q(X,and(person(X),Z))),who):- lemma(who,whpr).
+lex(whpr((X^Z)^q(X,and(thing(X),Z))),what):- lemma(what,whpr).
 
 %Numerals
 lex(dt((X^P)^(X^Q)^one(X,and(P,Q))),one):- lemma(one,one).
@@ -309,6 +308,8 @@ lex(be,Word) :- lemma(Word,be).
 lex(rel,Word):- lemma(Word,rel).
 lex(vacp,Word):- lemma(Word,vacp).
 lex(there,there).
+
+lex(not,not).
 
 
 %%%%%%%%%% ------------ Lexicons
@@ -357,7 +358,8 @@ rule(np(X),[pn(X)]).
 rule(n(A^C),[n(A^B),pp1((A^B)^C)]).
 rule(n(A),[adj(B^A),n(B)]).
 
-rule(pp1(C),[vacp,np(C)]).
+rule(ppvac(C),[vacp,np(C)]).
+rule(vp(X^not(Z),WH),[be,not,vp(X^Z,WH)]).
 
 rule(pp1(C),[p1(A^B^C),np(A^B)]).
 rule(pp2(A^B),[p2(A^C),np(C^B)]).
@@ -366,7 +368,7 @@ rule(vp(A^B,[]),[tv(A^C,[]),pp1(C^B)]).
 rule(ynq(Y),[be, np(X^Y),vp(X,[])]).
 rule(s(B,WH),[np(A^B),vp(A,WH)]).
 rule(vp(X,WH),[iv(X,WH)]).
-rule(s(X,WH),[vp(X,WH)]).
+rule(s(X,[WH]),[vp(X,[WH])]).
 
 rule(ynq(Y),[be, np(X^Y),pp2(X)]).
 
@@ -386,10 +388,10 @@ rule(inv_s(Y,[WH]),[be, np(X^Y),vp(X,[WH])]).
 rule(np(X),[there,np(X)]).
 
 
-rule(vp(K^Z,[]),[dtv(K^W^P^R,[]),np((W^Q)^Z),pp1((P^R)^Q)]).
+rule(vp(K^Z,[]),[dtv(K^W^P^R,[]),np((W^Q)^Z),ppvac((P^R)^Q)]).
 rule(vp(K^Z,[]),[dtv(K^W^P^R,[]),np((P^Q)^Z),np((W^R)^Q)]).
 
-%rule(s(B,[]),[there,ynq(B)]).
+rule(s(B,[]),[there,ynq(B)]).
 %rule(s(X,Q,[]),[there,be,np((X^P)^exists(X,and(Q,P)))]).
 
 rule(ynq(exists(X,Y)),[be,there,n(X^Y)]).
@@ -407,10 +409,11 @@ rule(ynq(exists(X,Y)),[be,there,n(X^Y)]).
 % ===========================================================
 
 model([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,
-a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1],
+a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1,
+a2,b2,c2,d2],
 [
-[box,[n,o,f1,a1,v1]],
-[bowl,[a,b]],
+[box,[n,o,f1,a1,v1,a2]],
+[bowl,[b,b2]],
 [egg,[c,d]],
 [milk,[l,v,w]],
 [shelf,[h,i,m]],
@@ -421,7 +424,7 @@ a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1],
 [fridge,[u]],
 [almond,[v]],
 [sandwich,[x,y,z,y1,z1]],
-[sam,[c1]],
+[sam,[a]],
 [sue,[d1]],
 [popsicle,[e1]],
 [freezer,[g1]],
@@ -447,22 +450,22 @@ a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1],
 [has,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
 [of,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
 
-[put,[[c1,f1,h],[c1,w1,h]]],
-[drink,[[c1,v],[c1,w]]],
-[drank,[[c1,v],[c1,w]]],
+[put,[[a,f1,h],[a,w1,h],[a,a2,b2]]],
+[drink,[[a,v],[a,w]]],
+[drank,[[a,v],[a,w]]],
 [skim,[w]],
-[white,[e,f]],
+[white,[e,f,b2]],
 [eat,[[d1,h1]]],
 [ate,[[d1,h1]]],
-[yellow,[b,a1]],
+[yellow,[b,a2]],
+[red,[a1]],
 [expire,[l]],
 [empty,[o,v1]],
 [green,[n,o]],
 [blue,[f1,g,x1]],
 [middle,[i]],
 [top,[h]],
-[bottom,[m]]
-]).
+[bottom,[m]]]).
 
 
 
@@ -471,7 +474,7 @@ modelchecker([s(B,[])],Result):- \+ sat([],B,_),invalid(Result).
 modelchecker([ynq(B)],Result):- sat([],B,_),yq(Result).
 modelchecker([ynq(B)],Result):- \+ sat([],B,_),nq(Result).
 modelchecker([q(_,B)],Result):- findall((X),(sat([],B,[_|[[_|[G3]]]]),f(X,G3)),Result).
-modelchecker([q(_,B)],Result):- \+ sat([],B,_),dne(Result).
+% modelchecker([q(_,B)],Result):- \+ sat([],B,_),dne(Result).
 
 dne([]).
 valid([true_in_the_model]).
@@ -553,7 +556,10 @@ sat(G1,thing(X),G3):-
 
 sat(G1,person(X),G3):-
    extend(G1,X,G3).
-
+   
+sat(G,no(X,Formula),G):-
+   sat(G,not(exists(X,Formula)),G).
+   
 % ==================================================
 % Definite quantifier (semantic rather than pragmatic account)
 % ==================================================
@@ -571,6 +577,7 @@ sat(G1,person(X),G3):-
 sat(G,not(Formula2),G):-
    \+ sat(G,Formula2,_).
 
+ 
 % ==================================================
 % Universal quantifier
 % ==================================================
@@ -626,6 +633,7 @@ sat(G,Rel,G):-
    i(Var1,G,Value1),
    i(Var2,G,Value2),
    f(R,[Value1,Value2]).
+   
 
 % ===========================================================
 %  Respond
