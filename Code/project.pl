@@ -392,7 +392,6 @@ rule(vp(K^Z,[]),[dtv(K^W^P^R,[]),np((W^Q)^Z),ppvac((P^R)^Q)]).
 rule(vp(K^Z,[]),[dtv(K^W^P^R,[]),np((P^Q)^Z),np((W^R)^Q)]).
 
 rule(s(B,[]),[there,ynq(B)]).
-%rule(s(X,Q,[]),[there,be,np((X^P)^exists(X,and(Q,P)))]).
 
 rule(ynq(exists(X,Y)),[be,there,n(X^Y)]).
 
