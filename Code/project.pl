@@ -393,7 +393,10 @@ rule(vp(K^Z,[]),[dtv(K^W^P^R,[]),np((P^Q)^Z),np((W^R)^Q)]).
 
 rule(s(B,[]),[there,ynq(B)]).
 
-rule(ynq(exists(X,Y)),[be,there,n(X^Y)]).
+%rule(ynq(exists(X,Y)),[be,there,n(X^Y)]).
+
+rule(ynq(M),[be,there,np((X^Y)^M)]):- Y = exists(R, and(fridge(R), in(X, R))).
+
 
 
 %%%% ------------------- End of Rules
@@ -440,14 +443,14 @@ a2,b2,c2,d2],
 [icecream,[u1]],
 
 
-[on,[[e,m],[f,i],[g,h],[x1,h],[b,i],[o,h],[f1,h],[w1,h]]],
-[inside,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
-[belong,[[v1,d1],[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
-[in,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
+[on,[[e,m],[f,i],[g,h],[x1,h],[b,i],[o,h],[f1,h],[w1,h],[a2,b2]]],
+[inside,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
+[belong,[[v1,d1],[k1,z1],[n1,y1],[z1,x1],[y1,g],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
+[in,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
 
-[contain,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
-[has,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
-[of,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
+[contain,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
+[has,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
+[of,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
 
 [put,[[a,f1,h],[a,w1,h],[a,a2,b2]]],
 [drink,[[a,v],[a,w]]],
