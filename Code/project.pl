@@ -418,7 +418,7 @@ a2,b2,c2,d2],
 [eat,[[d1,h1]]],
 [ate,[[d1,h1]]],
 [yellow,[b,a2]],
-[red,[a1]],
+[red,[a1,q1]],
 [expire,[l]],
 [empty,[o,v1]],
 [green,[n,o]],
@@ -429,12 +429,12 @@ a2,b2,c2,d2],
 
 
 [on,[[e,m],[f,i],[g,h],[x1,h],[b,i],[o,h],[f1,h],[w1,h],[a2,b2]]],
-[inside,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
+[inside,[ [q1,u],[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
 [belong,[[v1,d1],[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
-[in,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
+[in,[ [q1,u],[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
 
-[contain,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
-[has,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
+[contain,[ [u,q1],[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
+[has,[ [u,q1],[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
 [of,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
 
 
@@ -502,9 +502,9 @@ i(C,_,Value):-
 % ==================================================
 
 checker(List,Value):-
-   model(_,F), findall(Symbol,(member([Symbol,ListOfValues],F),member(Value,ListOfValues)),A), 
+   model(_,F), findall(Symbol,(member([Symbol,ListOfValues],F),member(Value,ListOfValues)),A),
    atomic_list_concat(A,' ',List).
-	
+
 f(Symbol,Value):-
    model(_,F), member([Symbol,ListOfValues],F),
     member(Value,ListOfValues),!.
@@ -523,17 +523,17 @@ f(Symbol,Value):-
 extend(G,X,[ [X,Val] | G]):-
    model(D,_),
    member(Val,D).
-   
+
 % ==================================================
 % Always true sat rules
 % ==================================================
-   
+
 sat(G1,thing(X),G3):-
    extend(G1,X,G3).
 
 sat(G1,person(X),G3):-
    extend(G1,X,G3).
-   
+
 sat(G,and(earth(_),_),G).
 
 % ==================================================
@@ -565,7 +565,7 @@ sat(G1,nine(X,Formula),G3):-
 sat(G1,ten(X,Formula),G3):-
    findall((G3),sat(G1,exists(X,Formula),G3),L1),length(L1,N),N>=10,nl.
 
-   
+
 % ==================================================
 % Definite quantifier (semantic rather than pragmatic account)
 % ==================================================
@@ -583,14 +583,14 @@ sat(G1,ten(X,Formula),G3):-
 sat(G,not(Formula2),G):-
    \+ sat(G,Formula2,_).
 
- 
+
 % ==================================================
 % Universal quantifier
 % ==================================================
 
 sat(G, forall(X,Formula2),G):-
   sat(G,not( exists(X,not(Formula2) ) ),G).
-  
+
 
 sat(G,no(X,Formula2),G):-
   sat(G,exists(X,not(Formula2)),G).
@@ -643,7 +643,7 @@ sat(G,Rel,G):-
    i(Var1,G,Value1),
    i(Var2,G,Value2),
    f(R,[Value1,Value2]).
-   
+
 
 % ===========================================================
 %  Respond
