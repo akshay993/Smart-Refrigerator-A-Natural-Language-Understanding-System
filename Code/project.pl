@@ -503,7 +503,7 @@ i(C,_,Value):-
 
 checker(List,Value):-
    model(_,F), findall(Symbol,(member([Symbol,ListOfValues],F),member(Value,ListOfValues)),A), 
-   atomic_list_concat(A,' ',M), atom_concat('a ',M,List).
+   atomic_list_concat(A,' ',List).
 	
 f(Symbol,Value):-
    model(_,F), member([Symbol,ListOfValues],F),
