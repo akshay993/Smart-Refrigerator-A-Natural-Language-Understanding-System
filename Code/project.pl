@@ -364,7 +364,7 @@ rule(vp(X^not(Z),WH),[be,not,vp(X^Z,WH)]).
 rule(pp1(C),[p1(A^B^C),np(A^B)]).
 rule(pp2(A^B),[p2(A^C),np(C^B)]).
 rule(vp(A^B,[]),[tv(A^C,[]),np(C^B)]).
-rule(vp(A^B,[]),[tv(A^C,[]),pp1(C^B)]).
+rule(vp(A^B,[]),[tv(A^C,[]),ppvac(C^B)]).
 rule(ynq(Y),[be, np(X^Y),vp(X,[])]).
 rule(s(B,WH),[np(A^B),vp(A,WH)]).
 rule(vp(X,WH),[iv(X,WH)]).
@@ -440,7 +440,7 @@ a2,b2,c2,d2],
 [icecream,[u1]],
 
 
-[on,[[f,m],[f,i],[g,h],[x1,h],[b,i],[o,h],[f1,h],[w1,h]]],
+[on,[[e,m],[f,i],[g,h],[x1,h],[b,i],[o,h],[f1,h],[w1,h]]],
 [inside,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
 [belong,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
 [in,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
@@ -473,7 +473,7 @@ modelchecker([s(B,[])],Result):- \+ sat([],B,_),invalid(Result).
 modelchecker([ynq(B)],Result):- sat([],B,_),yq(Result).
 modelchecker([ynq(B)],Result):- \+ sat([],B,_),nq(Result).
 modelchecker([q(_,B)],Result):- findall((X),(sat([],B,[_|[[_|[G3]]]]),f(X,G3)),Result).
-% modelchecker([q(_,B)],Result):- \+ sat([],B,_),dne(Result).
+modelchecker([q(_,B)],Result):- \+ sat([],B,_),dne(Result).
 
 dne([]).
 valid([true_in_the_model]).
@@ -556,8 +556,6 @@ sat(G1,thing(X),G3):-
 sat(G1,person(X),G3):-
    extend(G1,X,G3).
    
-sat(G,no(X,Formula),G):-
-   sat(G,not(exists(X,Formula)),G).
    
 % ==================================================
 % Definite quantifier (semantic rather than pragmatic account)
@@ -583,6 +581,10 @@ sat(G,not(Formula2),G):-
 
 sat(G, forall(X,Formula2),G):-
   sat(G,not( exists(X,not(Formula2) ) ),G).
+  
+
+sat(G,no(X,Formula2),G):-
+  sat(G,exists(X,not(Formula2)),G).
 
 
 % ==================================================
