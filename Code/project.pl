@@ -516,17 +516,17 @@ f(Symbol,Value):-
 extend(G,X,[ [X,Val] | G]):-
    model(D,_),
    member(Val,D).
-
+   
 % ==================================================
 % Always true sat rules
 % ==================================================
-
+   
 sat(G1,thing(X),G3):-
    extend(G1,X,G3).
 
 sat(G1,person(X),G3):-
    extend(G1,X,G3).
-
+   
 sat(G,and(earth(_),_),G).
 
 % ==================================================
@@ -558,7 +558,7 @@ sat(G1,nine(X,Formula),G3):-
 sat(G1,ten(X,Formula),G3):-
    findall((G3),sat(G1,exists(X,Formula),G3),L1),length(L1,N),N>=10,nl.
 
-
+   
 % ==================================================
 % Definite quantifier (semantic rather than pragmatic account)
 % ==================================================
@@ -576,14 +576,14 @@ sat(G1,ten(X,Formula),G3):-
 sat(G,not(Formula2),G):-
    \+ sat(G,Formula2,_).
 
-
+ 
 % ==================================================
 % Universal quantifier
 % ==================================================
 
 sat(G, forall(X,Formula2),G):-
   sat(G,not( exists(X,not(Formula2) ) ),G).
-
+  
 
 sat(G,no(X,Formula2),G):-
   sat(G,exists(X,not(Formula2)),G).
@@ -636,7 +636,7 @@ sat(G,Rel,G):-
    i(Var1,G,Value1),
    i(Var2,G,Value2),
    f(R,[Value1,Value2]).
-
+   
 
 % ===========================================================
 %  Respond
@@ -644,44 +644,32 @@ sat(G,Rel,G):-
 % ===========================================================
 
 % Declarative true in the model
-%respond(Evaluation) :-
-%		Evaluation = [true_in_the_model],nl,
-%		write('That is correct'),!.
+respond(Evaluation) :-
+		Evaluation = [true_in_the_model],nl,
+		write('That is correct'),!.
 
 % Declarative false in the model
-%respond(Evaluation) :-
-%		Evaluation = [not_true_in_the_model],nl,
-%		write('That is not correct'),!.
+respond(Evaluation) :-
+		Evaluation = [not_true_in_the_model],nl,
+		write('That is not correct'),!.
 
 % Yes-No interrogative true in the model
-%respond(Evaluation) :-
-%		Evaluation = [yes_to_question],nl,
-%		write('yes').
+respond(Evaluation) :-
+		Evaluation = [yes_to_question],nl,
+		write('yes').
 
 % Yes-No interrogative false in the model
-%respond(Evaluation) :-
-%		Evaluation = [no_to_question],nl,
-%		write('no').
+respond(Evaluation) :-
+		Evaluation = [no_to_question],nl,
+		write('no').
 
 % wh-interrogative true in the model
 % ...
-%respond(Evaluation) :-
-%		Evaluation \= [],nl, write(Evaluation).
+respond(Evaluation) :-
+		Evaluation \= [],nl, write(Evaluation).
 
 % wh-interrogative false in the model
 % ...
 
-%respond(Evaluation) :-
-%		Evaluation = [],nl, write('My knowledge is limited by the programming abilities of my creator.').
-
-
-
-respond(Evaluation):- printans(Evaluation).
-
-printans([H|T]):- H='true_in_the_model' -> write('That is correct') ;
-                  H='not_true_in_the_model' -> write('That is not correct');
-                  H='yes_to_question' -> write('Yes');
-                  H='no_to_question' -> write('No');
-
-                  write(H), write(' '), printans(T).
-printans([]).
+respond(Evaluation) :-
+		Evaluation = [],nl, write('My knowledge is limited by the programming abilities of my creator.').
