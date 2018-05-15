@@ -95,11 +95,6 @@ srparse(Stack,[Word|Words],M):-
 % --------------------------------------------------------------------
 
 
-lemma(is,be).
-lemma(was,be).
-lemma(are,be).
-
-
 %%%%%%%%%% ------------ Lemmas
 
 %% Determiners
@@ -220,6 +215,9 @@ lemma(had,be).
 lemma(have,be).
 lemma(did,be).
 lemma(do,be).
+lemma(is,be).
+lemma(was,be).
+lemma(are,be).
 
 %% WHPR
 lemma(who,whpr).
@@ -284,7 +282,6 @@ lex(adj((X^P)^X^and(P,Q)),Word):-lemma(Word,adj), Q=.. [Word,X].
 
 %Preposition
 lex(p2(K^W^P),Word):-lemma(Word,p), P=.. [Word,K,W].
-
 lex(p1((Y^Z)^Q^(X^P)^and(P,Q)),Word):- lemma(Word,p), Z=.. [Word,X,Y].
 
 %WHPR
@@ -309,6 +306,7 @@ lex(rel,Word):- lemma(Word,rel).
 lex(vacp,Word):- lemma(Word,vacp).
 lex(there,there).
 
+%Negation
 lex(not,not).
 
 
@@ -351,10 +349,10 @@ suffix(ing).
 
 %%%% -------------------- Rules
 
-
 rule(np((X^Y)^exists(X,and(Z,Y))),[n(X^Z)]).
 rule(np(Y),[dt(X^Y),n(X)]).
 rule(np(X),[pn(X)]).
+
 rule(n(A^C),[n(A^B),pp1((A^B)^C)]).
 rule(n(A),[adj(B^A),n(B)]).
 
@@ -363,13 +361,16 @@ rule(vp(X^not(Z),WH),[be,not,vp(X^Z,WH)]).
 
 rule(pp1(C),[p1(A^B^C),np(A^B)]).
 rule(pp2(A^B),[p2(A^C),np(C^B)]).
+
 rule(vp(A^B,[]),[tv(A^C,[]),np(C^B)]).
 rule(vp(A^B,[]),[tv(A^C,[]),ppvac(C^B)]).
+rule(vp(X,WH),[iv(X,WH)]).
+
+
 rule(ynq(Y),[be, np(X^Y),vp(X,[])]).
 rule(s(B,WH),[np(A^B),vp(A,WH)]).
-rule(vp(X,WH),[iv(X,WH)]).
 rule(s(X,[WH]),[vp(X,[WH])]).
-
+rule(s(B,[]),[there,ynq(B)]).
 rule(ynq(Y),[be, np(X^Y),pp2(X)]).
 
 rule(Y,[whpr(X^Y),vp(X,[])]).
@@ -387,16 +388,10 @@ rule(Z,[whpr((X^Y)^Z), inv_s(Y,[X])]).
 rule(inv_s(Y,[WH]),[be, np(X^Y),vp(X,[WH])]).
 rule(np(X),[there,np(X)]).
 
-
 rule(vp(K^Z,[]),[dtv(K^W^P^R,[]),np((W^Q)^Z),ppvac((P^R)^Q)]).
 rule(vp(K^Z,[]),[dtv(K^W^P^R,[]),np((P^Q)^Z),np((W^R)^Q)]).
 
-rule(s(B,[]),[there,ynq(B)]).
-
-%rule(ynq(exists(X,Y)),[be,there,n(X^Y)]).
-
-rule(ynq(M),[be,there,np((X^Y)^M)]):- Y = exists(R, and(fridge(R), in(X, R))).
-
+rule(ynq(M),[be,there,np((X^Y)^M)]):- Y = exists(R, and(earth(R), in(X, R))).
 
 
 %%%% ------------------- End of Rules
@@ -470,7 +465,6 @@ a2,b2,c2,d2],
 [bottom,[m]]]).
 
 
-
 modelchecker([s(B,[])],Result):- sat([],B,_),valid(Result).
 modelchecker([s(B,[])],Result):- \+ sat([],B,_),invalid(Result).
 modelchecker([ynq(B)],Result):- sat([],B,_),yq(Result).
@@ -522,10 +516,21 @@ f(Symbol,Value):-
 extend(G,X,[ [X,Val] | G]):-
    model(D,_),
    member(Val,D).
+   
+% ==================================================
+% Always true sat rules
+% ==================================================
+   
+sat(G1,thing(X),G3):-
+   extend(G1,X,G3).
 
+sat(G1,person(X),G3):-
+   extend(G1,X,G3).
+   
+sat(G,and(earth(_),_),G).
 
 % ==================================================
-% Existential quantifier
+% Existential quantifier and Numerals
 % ==================================================
 
 sat(G1,exists(X,Formula),G3):-
@@ -553,12 +558,6 @@ sat(G1,nine(X,Formula),G3):-
 sat(G1,ten(X,Formula),G3):-
    findall((G3),sat(G1,exists(X,Formula),G3),L1),length(L1,N),N>=10,nl.
 
-sat(G1,thing(X),G3):-
-   extend(G1,X,G3).
-
-sat(G1,person(X),G3):-
-   extend(G1,X,G3).
-   
    
 % ==================================================
 % Definite quantifier (semantic rather than pragmatic account)
