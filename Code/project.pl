@@ -409,6 +409,35 @@ model([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,
 a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1,
 a2,b2,c2,d2],
 [
+
+[put,[[a,f1,h],[a,w1,h],[a,a2,b2]]],
+[drink,[[a,v],[a,d2]]],
+[drank,[[a,v],[a,d2]]],
+[skim,[d2]],
+[white,[e,f,b2,v1]],
+[eat,[[d1,h1]]],
+[ate,[[d1,h1]]],
+[yellow,[b,a2]],
+[red,[a1]],
+[expire,[l]],
+[empty,[o,v1]],
+[green,[n,o]],
+[blue,[f1,g,x1]],
+[middle,[i]],
+[top,[h]],
+[bottom,[m]],
+
+
+[on,[[e,m],[f,i],[g,h],[x1,h],[b,i],[o,h],[f1,h],[w1,h],[a2,b2]]],
+[inside,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
+[belong,[[v1,d1],[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
+[in,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
+
+[contain,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
+[has,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
+[of,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
+
+
 [box,[n,o,f1,a1,v1,a2]],
 [bowl,[b,b2]],
 [egg,[c,d]],
@@ -435,41 +464,15 @@ a2,b2,c2,d2],
 [orange,[o1,p1]],
 [apple,[q1,r1]],
 [mango,[s1,t1]],
-[icecream,[u1]],
-
-
-[on,[[e,m],[f,i],[g,h],[x1,h],[b,i],[o,h],[f1,h],[w1,h],[a2,b2]]],
-[inside,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
-[belong,[[v1,d1],[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
-[in,[[k1,z1],[n1,y1],[z1,x1],[y1,g],[w,u],[n1,m],[m1,m],[l1,m],[k1,m],[u1,g1],[e1,g1],[p1,u],[o1,u],[r1,u],[q1,u],[s1,u],[t1,u],[c,b],[d,b],[j,e],[p,n],[q,n],[r,f1],[s,u],[t,u],[a1,o],[e1,o],[e1,v1],[v1,g1],[h1,z],[k1,x]]],
-
-[contain,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
-[has,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
-[of,[[z1,k1],[y1,n1],[x1,z1],[g,y1],[u,w],[m,n1],[m,m1],[m,l1],[m,k1],[g1,u1],[g1,e1],[u,p1],[u,o1],[u,r1],[u,q1],[u,s1],[u,t1],[b,c],[b,d],[f,j],[n,p],[n,q],[f1,r],[u,s],[u,t],[o,a1],[o,e1],[v1,e1],[g1,v1],[z,h1],[x,k1]]],
-
-[put,[[a,f1,h],[a,w1,h],[a,a2,b2]]],
-[drink,[[a,v],[a,d2]]],
-[drank,[[a,v],[a,d2]]],
-[skim,[d2]],
-[white,[e,f,b2,v1]],
-[eat,[[d1,h1]]],
-[ate,[[d1,h1]]],
-[yellow,[b,a2]],
-[red,[a1]],
-[expire,[l]],
-[empty,[o,v1]],
-[green,[n,o]],
-[blue,[f1,g,x1]],
-[middle,[i]],
-[top,[h]],
-[bottom,[m]]]).
+[icecream,[u1]]
+]).
 
 
 modelchecker([s(B,[])],Result):- sat([],B,_),valid(Result).
 modelchecker([s(B,[])],Result):- \+ sat([],B,_),invalid(Result).
 modelchecker([ynq(B)],Result):- sat([],B,_),yq(Result).
 modelchecker([ynq(B)],Result):- \+ sat([],B,_),nq(Result).
-modelchecker([q(_,B)],Result):- findall((X),(sat([],B,[_|[[_|[G3]]]]),f(X,G3)),Result).
+modelchecker([q(_,B)],Result):- findall((X),(sat([],B,[_|[[_|[G3]]]]),checker(X,G3)),Result).
 modelchecker([q(_,B)],Result):- \+ sat([],B,_),dne(Result).
 
 dne([]).
@@ -498,6 +501,10 @@ i(C,_,Value):-
 % Determines if a value is in the denotation of a Predicate/Relation
 % ==================================================
 
+checker(List,Value):-
+   model(_,F), findall(Symbol,(member([Symbol,ListOfValues],F),member(Value,ListOfValues)),A), 
+   atomic_list_concat(A,' ',M), atom_concat('a ',M,List).
+	
 f(Symbol,Value):-
    model(_,F), member([Symbol,ListOfValues],F),
     member(Value,ListOfValues),!.
