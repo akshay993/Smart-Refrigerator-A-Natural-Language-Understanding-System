@@ -1,7 +1,7 @@
 # Smart-Refrigerator-A-Natural-Language-Understanding-System
 Implemented in Prolog
 
-The Project is done as final project for Computational Linguistics class CSE567.
+This is done as final project for Computational Linguistics class CSE567.
 
 A natural language understanding system that can interface with a ‘smart’ refrigerator and allow users to text queries or instructions to their fridge.
 
